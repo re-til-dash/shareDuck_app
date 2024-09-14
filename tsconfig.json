@@ -18,8 +18,27 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+
+    "baseUrl": "./",
+    "paths": {
+      "@*": ["src/*"],
+      "@components": ["src/components/*"],
+      "@hooks": ["src/hooks/*"],
+      "@utils": ["src/utils/*"],
+      "@types": ["src/types/*"],
+      "@assets": ["src/assets/*"]
+    }
   },
-  "include": ["src", "electron"],
+  "include": [
+    "vite.config.ts",
+    "package.json",
+    "src",
+    "electron",
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+    "src/**/*.tsx",
+    "*.ts"
+  ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
