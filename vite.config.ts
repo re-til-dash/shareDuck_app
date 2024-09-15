@@ -53,6 +53,14 @@ export default defineConfig({
         find: "@types",
         replacement: path.resolve(__dirname, "./src/types"),
       },
+      {
+        find: "@service",
+        replacement: path.resolve(__dirname, "./src/service"),
+      },
+      {
+        find: "@styles",
+        replacement: path.resolve(__dirname, "./src/styles"),
+      },
     ],
   },
 });
