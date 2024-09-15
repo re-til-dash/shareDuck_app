@@ -42,5 +42,15 @@
     "src/**/*.tsx",
     "*.ts"
   ],
+  "include": [
+    "vite.config.ts",
+    "package.json",
+    "src",
+    "electron",
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+    "src/**/*.tsx",
+    "*.ts"
+  ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
