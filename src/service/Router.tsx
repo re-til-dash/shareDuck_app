@@ -1,8 +1,8 @@
 import App from "../App";
 import { createHashRouter, RouteObject } from "react-router-dom";
 
-const router: RouteObject[] = [{ path: "", element: <App /> }];
+const routers: RouteObject[] = [{ path: "", element: <App /> }];
 
-const Router = createHashRouter(router);
+const router = createHashRouter(routers);
 
-export default Router;
+export default router;
