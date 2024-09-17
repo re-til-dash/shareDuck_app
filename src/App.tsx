@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { GlobalStyle, LightTheme } from "shareduck-ui";
 import { ThemeProvider } from "styled-components";
-import Layout from "./components/template/Layout";
+import Layout from "./renderer/components/template/Layout";
 
 function App() {
   return (
