@@ -1631,6 +1631,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"axios@npm:^1.7.7":
+  version: 1.7.7
+  resolution: "axios@npm:1.7.7"
+  dependencies:
+    follow-redirects: "npm:^1.15.6"
+    form-data: "npm:^4.0.0"
+    proxy-from-env: "npm:^1.1.0"
+  checksum: 10c0/4499efc89e86b0b49ffddc018798de05fab26e3bf57913818266be73279a6418c3ce8f9e934c7d2d707ab8c095e837fc6c90608fb7715b94d357720b5f568af7
+  languageName: node
+  linkType: hard
+
 "balanced-match@npm:^1.0.0":
   version: 1.0.2
   resolution: "balanced-match@npm:1.0.2"
@@ -2741,6 +2752,16 @@ __metadata:
   version: 3.3.1
   resolution: "flatted@npm:3.3.1"
   checksum: 10c0/324166b125ee07d4ca9bcf3a5f98d915d5db4f39d711fba640a3178b959919aae1f7cfd8aabcfef5826ed8aa8a2aa14cc85b2d7d18ff638ddf4ae3df39573eaf
+  languageName: node
+  linkType: hard
+
+"follow-redirects@npm:^1.15.6":
+  version: 1.15.9
+  resolution: "follow-redirects@npm:1.15.9"
+  peerDependenciesMeta:
+    debug:
+      optional: true
+  checksum: 10c0/5829165bd112c3c0e82be6c15b1a58fa9dcfaede3b3c54697a82fe4a62dd5ae5e8222956b448d2f98e331525f05d00404aba7d696de9e761ef6e42fdc780244f
   languageName: node
   linkType: hard
 
@@ -4076,6 +4097,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"proxy-from-env@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "proxy-from-env@npm:1.1.0"
+  checksum: 10c0/fe7dd8b1bdbbbea18d1459107729c3e4a2243ca870d26d34c2c1bcd3e4425b7bcc5112362df2d93cc7fb9746f6142b5e272fd1cc5c86ddf8580175186f6ad42b
+  languageName: node
+  linkType: hard
+
 "pump@npm:^3.0.0":
   version: 3.0.0
   resolution: "pump@npm:3.0.0"
@@ -4428,6 +4456,7 @@ __metadata:
     "@typescript-eslint/eslint-plugin": "npm:^7.1.1"
     "@typescript-eslint/parser": "npm:^7.1.1"
     "@vitejs/plugin-react": "npm:^4.2.1"
+    axios: "npm:^1.7.7"
     electron: "npm:^30.0.1"
     electron-builder: "npm:^24.13.3"
     eslint: "npm:^8.57.0"
@@ -4436,7 +4465,7 @@ __metadata:
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
     react-router-dom: "npm:^6.26.2"
-    shareduck-ui: "npm:^0.0.21"
+    shareduck-ui: "npm:^0.0.22"
     styled-components: "npm:^6.1.13"
     typescript: "npm:^5.2.2"
     vite: "npm:^5.1.6"
@@ -4445,9 +4474,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"shareduck-ui@npm:^0.0.21":
-  version: 0.0.21
-  resolution: "shareduck-ui@npm:0.0.21"
+"shareduck-ui@npm:^0.0.22":
+  version: 0.0.22
+  resolution: "shareduck-ui@npm:0.0.22"
   dependencies:
     "@testing-library/dom": "npm:^10.3.0"
     "@testing-library/jest-dom": "npm:^6.4.6"
@@ -4459,7 +4488,7 @@ __metadata:
     react: ^18.2.0
     react-dom: ^18.2.0
     styled-components: ^6.1.11
-  checksum: 10c0/00a8d20bc84b5014a9f4589b09008e7b6693a95236d9d362152f1fda2d3ec7e3cc786858053594293f10b768df13726cf1da7230b37eb1830a45fd9b7a45b9bf
+  checksum: 10c0/5432648ed0a6ad34ab659aa33b4359428921835494e15455e8148a8905f60b37c8e85d1d1f455fbdef3f124958e95c2fdeee28f9c7f384cdb8ea0916e019cf6b
   languageName: node
   linkType: hard
 
