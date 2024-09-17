@@ -14,5 +14,5 @@ export default function Home() {
     }
   }, []);
 
-  return <section>{typeof result === "string" && result}</section>;
+  return <section>home</section>;
 }

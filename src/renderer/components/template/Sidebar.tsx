@@ -4,6 +4,7 @@ import { User, userData } from "@/types/user";
 import styled from "styled-components";
 import { typeCategory } from "@/types/category";
 import { Button, Details, FloatingButton, Profile } from "shareduck-ui";
+import { useNavigate } from "react-router";
 
 export default function Sidebar() {
   const DEFAULT_CATEGORIES = [
@@ -21,6 +22,8 @@ export default function Sidebar() {
     },
   ]);
 
+  const navigate = useNavigate();
+
   /**local state*/
   const [selected, setSelected] = useState("Home");
   //처음에는 Home 카테고리이며, Home은 하위 메뉴가 없으므로 99로 초기화
@@ -29,11 +32,14 @@ export default function Sidebar() {
 
   /**event handler*/
   const handleClickCaptureCategory: MouseEventHandler = (e) => {
-    console.log(e.target);
+    const target = e.target as HTMLElement;
+    navigate(`/${target.innerText.toLowerCase()}`);
   };
   const handleClickNew: MouseEventHandler = (e) => {
     e.preventDefault();
   };
+  const handleClickSetting: MouseEventHandler = (_e) => {};
+  const handleClickLogOut: MouseEventHandler = (_e) => {};
   const handleClickShow: MouseEventHandler = () => {
     setShow(!show);
   };
@@ -54,6 +60,7 @@ export default function Sidebar() {
           open={selected === "Home"}
           lists={[]}
           onClick={() => setSelected("Home")}
+          id="home"
         >
           <Details.Icon src="message_dark" alt="message" />
           {show && <Details.Text>Home</Details.Text>}
@@ -62,23 +69,38 @@ export default function Sidebar() {
           categories.map(({ id, name }) => (
             <Details
               key={id}
+              id={name.toLowerCase()}
               open={selected === name}
-              lists={DEFAULT_CATEGORIES}
+              lists={show ? DEFAULT_CATEGORIES : []}
               onClick={() => setSelected(name)}
             >
               <Details.Icon src="message_dark" alt="message" />
               {show && <Details.Text>{name}</Details.Text>}
             </Details>
           ))}
+      </section>
+      <Button style={{ marginRight: 0 }} type="button" onClick={handleClickNew}>
+        <Button.Icon src={"plus"} alt={"plus"} />
+        {show && <Button.Text>New Category</Button.Text>}
+      </Button>
+      <StyledSettingsSection>
         <Button
           style={{ marginRight: 0 }}
           type="button"
-          onClick={handleClickNew}
+          onClick={handleClickSetting}
         >
           <Button.Icon src={"plus"} alt={"plus"} />
-          {show && <Button.Text>New Category</Button.Text>}
+          {show && <Button.Text>Settings</Button.Text>}
         </Button>
-      </section>
+        <Button
+          style={{ marginRight: 0 }}
+          type="button"
+          onClick={handleClickLogOut}
+        >
+          <Button.Icon src={"plus"} alt={"plus"} />
+          {show && <Button.Text>Log-out</Button.Text>}
+        </Button>
+      </StyledSettingsSection>
       <StyledMoreFloatButton onClick={handleClickShow}>
         {show ? "<" : ">"}
       </StyledMoreFloatButton>
@@ -88,6 +110,8 @@ export default function Sidebar() {
 
 const StyledAside = styled.aside`
   position: relative;
+  display: flex;
+  flex-direction: column;
   width: fit-content;
   height: 100vh;
   padding: 24px 16px;
@@ -99,6 +123,10 @@ const StyledAside = styled.aside`
 
   & > :first-child {
     margin-bottom: 8px;
+  }
+
+  @media (max-width: 200px) {
+    box-shadow: 0px 1px 50px 10px rgba(0, 0, 0, 0.1);
   }
 `;
 
@@ -112,4 +140,18 @@ const StyledMoreFloatButton = styled(FloatingButton)`
   margin: auto;
   margin-right: 0;
   transform: translateX(2rem);
+`;
+
+const StyledSettingsSection = styled.section`
+  margin-top: auto;
+  margin-bottom: 0;
+  & button {
+    background-color: var(--wb-000);
+  }
+  & button > span {
+    width: 100%;
+    color: var(--color-wb-700, #3a373a);
+
+    /* typo/typo-body-14-bold */
+  }
 `;
