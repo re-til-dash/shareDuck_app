@@ -13,5 +13,13 @@ export interface User extends UserId {
   provider: "JWT" | "GOOGLE";
   idx: string;
   state: "ACTIVE" | "SLEEP" | "DELETE";
+  name: string;
   lastConnect: string;
 }
+
+export const userData = {
+  email: "shareDuck@test.com",
+  name: "shareoluck",
+  password: "test1234",
+  profile: "",
+};
