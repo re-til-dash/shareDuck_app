@@ -63,7 +63,15 @@ export default defineConfig({
       },
       {
         find: "@styles",
-        replacement: path.resolve(__dirname, "./src/styles"),
+        replacement: path.resolve(__dirname, "./src/renderer/styles"),
+      },
+      {
+        find: "@config",
+        replacement: path.resolve(__dirname, "./src/main/config"),
+      },
+      {
+        find: "@api",
+        replacement: path.resolve(__dirname, "./src/main/api"),
       },
       {
         find: "@config",
