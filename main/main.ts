@@ -3,7 +3,10 @@
 import { app } from "electron";
 
 import createWindow from "./windows/windows.ts";
-import initializeApp from "./app.ts";
+function initializeApp() {
+  app.setName("shareDuck");
+  // 그 외 앱 초기화 작업들
+}
 
 app.on("ready", createWindow);
 app.on("activate", initializeApp);
