@@ -10,29 +10,16 @@ ipcMain.handle("get-user-info", async () => {
 type typeHandlers = keyof typeof handlers;
 const keys = Object.keys(handlers) as typeHandlers[];
 
-keys.forEach((key) => {
-  ipcMain.handle(`${key}-get-ipc`, async (_e, ..._args) => {
-    const reuslt = handlers[key]?.get();
-    return reuslt;
+const registerIpcHandler = (method: string, key: typeHandlers) => {
+  ipcMain.handle(`${key}-${method}-ipc`, async (_e, ..._args) => {
+    const handler = handlers[key]?.[method];
+    if (!handler) return;
+    return await handler(..._args);
   });
-  ipcMain.handle(`${key}-post-ipc`, async (_e, ..._args) => {
-    if (!handlers[key].post) return;
-    // const reuslt = handlers[key]?.post(_args);
-    // return reuslt;
-  });
-  //todo: 인자 수정 필요
-  ipcMain.handle(`${key}-patch-ipc`, async (_e, ..._args) => {
-    if (!handlers[key].patch) return;
-    const reuslt = handlers[key]?.patch();
-    return reuslt;
-  });
+};
 
-  //todo: 인자 수정 필요
-  ipcMain.handle(`${key}-delete-ipc`, async (_e, ..._args) => {
-    if (!handlers[key].delete) return;
-    const reuslt = handlers[key]?.delete();
-    return reuslt;
-  });
+["get", "post", "patch", "delete"].forEach((method) => {
+  keys.forEach((key) => registerIpcHandler(method, key));
 });
 
 export default { ipcMain };
