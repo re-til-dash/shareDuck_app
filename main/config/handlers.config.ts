@@ -3,7 +3,7 @@ import getUsers from "../api/getUser.ts";
 import postUsers from "../api/postUsers.ts";
 
 const handlers = {
-  catgories: {
+  categories: {
     get: getCategories,
     post: () => {},
     patch: () => {},
@@ -16,5 +16,7 @@ const handlers = {
     delete: () => {},
   },
 };
+
+export type typeHandlers = keyof typeof handlers;
 
 export default handlers;

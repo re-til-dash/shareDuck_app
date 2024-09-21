@@ -1,25 +1,19 @@
 //IPC 핸들러 정의
 
 import { ipcMain } from "electron";
-import handlers from "./config/handlers.config.ts";
+import handlers, { typeHandlers } from "./config/handlers.config.ts";
+// 'get-user-data' 채널에 대한 핸들러 등록
+ipcMain.handle("get-user-data", async (event, userId) => {
+  // 메인 프로세스에서 처리할 로직
+  const userData = { id: userId, name: "John Doe", email: "john@example.com" };
 
-ipcMain.handle("get-user-info", async () => {
-  // 로그인 사용자 정보 처리
-  return { name: "User", id: "123" };
+  // 결과를 렌더러 프로세스에 반환
+  return userData;
 });
-type typeHandlers = keyof typeof handlers;
-const keys = Object.keys(handlers) as typeHandlers[];
 
-const registerIpcHandler = (method: string, key: typeHandlers) => {
+export default function registerIpcHandler(method: string, key: typeHandlers) {
   ipcMain.handle(`${key}-${method}-ipc`, async (_e, ..._args) => {
     const handler = handlers[key]?.[method];
-    if (!handler) return;
     return await handler(..._args);
   });
-};
-
-["get", "post", "patch", "delete"].forEach((method) => {
-  keys.forEach((key) => registerIpcHandler(method, key));
-});
-
-export default { ipcMain };
+}
