@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
     "jsx": "react-jsx",
-    "jsx": "react-jsx",
     "useDefineForClassFields": true,
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "skipLibCheck": true,
@@ -10,7 +9,6 @@
     "allowImportingTsExtensions": true,
     "isolatedModules": true,
     "noEmit": true,
-    "esModuleInterop": true,
     "esModuleInterop": true,
 
     /* Linting */
@@ -24,7 +22,6 @@
       "@*": ["src/*"],
       "@hooks": ["src/hooks/*"],
       "@utils": ["src/utils/*"],
-      "@/types": ["src/types/*"],
       "@/types": ["src/types/*"],
       "@assets": ["src/assets/*"],
       "@windows": ["src/windows/*"],
