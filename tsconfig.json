@@ -25,9 +25,9 @@
       "@/types": ["src/types/*"],
       "@assets": ["src/assets/*"],
       "@windows": ["src/windows/*"],
-      "@main": ["main/*"],
-      "@config": ["main/config/*"],
-      "@api": ["main/api/*"],
+      "@main": ["src/main/*"],
+      "@config": ["src/main/config/*"],
+      "@api": ["src/main/api/*"],
       "@components": ["src/components/*"],
       "@styles": ["src/styles/*"]
     }
@@ -44,11 +44,7 @@
     "src/*.tsx",
     "src/**/*.ts",
     "src/**/*.tsx"
-    "src/**/*.tsx"
   ],
-
-  "references": [{ "path": "./tsconfig.node.json" }],
-  "exclude": ["node_modules"]
 
   "references": [{ "path": "./tsconfig.node.json" }],
   "exclude": ["node_modules"]
