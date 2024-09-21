@@ -14,6 +14,7 @@ module.exports = {
       "warn",
       { allowConstantExport: true },
     ],
+    "@typescript-eslint/no-var-requires": false,
   },
   settings: {
     "import/resolver": {
@@ -28,7 +29,7 @@ module.exports = {
           ["@router", "./src/router"],
           ["@store", "./src/store"],
           ["@styles", "./src/styles"],
-          ["@types", "./src/types"],
+          ["@/types", "./src/types"],
           ["@utils", "./src/utils"],
         ],
       },
