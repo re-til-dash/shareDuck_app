@@ -24,7 +24,7 @@
       "@utils": ["src/utils/*"],
       "@/types": ["src/types/*"],
       "@assets": ["src/assets/*"],
-      "@service": ["src/service/*"],
+      "@windows": ["src/windows/*"],
       "@main": ["main/*"],
       "@config": ["main/config/*"],
       "@api": ["main/api/*"],

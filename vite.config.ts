@@ -54,24 +54,24 @@ export default defineConfig({
         replacement: path.resolve(__dirname, "./src/types"),
       },
       {
-        find: "@renderer",
-        replacement: path.resolve(__dirname, "./src/renderer"),
+        find: "@windows",
+        replacement: path.resolve(__dirname, "./src/windows"),
       },
       {
         find: "@main",
-        replacement: path.resolve(__dirname, "./src/main"),
+        replacement: path.resolve(__dirname, "./main"),
       },
       {
         find: "@styles",
-        replacement: path.resolve(__dirname, "./src/renderer/styles"),
+        replacement: path.resolve(__dirname, "./src/styles"),
       },
       {
         find: "@config",
-        replacement: path.resolve(__dirname, "./src/main/config"),
+        replacement: path.resolve(__dirname, "./main/config"),
       },
       {
         find: "@api",
-        replacement: path.resolve(__dirname, "./src/main/api"),
+        replacement: path.resolve(__dirname, "./main/api"),
       },
     ],
   },
