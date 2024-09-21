@@ -23,12 +23,15 @@
     "baseUrl": "./",
     "paths": {
       "@*": ["src/*"],
-      "@components": ["src/components/*"],
       "@hooks": ["src/hooks/*"],
       "@utils": ["src/utils/*"],
       "@types": ["src/types/*"],
       "@assets": ["src/assets/*"],
       "@service": ["src/service/*"],
+      "@main": ["main/*"],
+      "@config": ["main/config/*"],
+      "@api": ["main/api/*"],
+      "@components": ["src/components/*"],
       "@styles": ["src/styles/*"]
     }
   },
