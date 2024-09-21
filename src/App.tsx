@@ -1,6 +1,6 @@
 import { GlobalStyle, LightTheme } from "shareduck-ui";
 import { ThemeProvider } from "styled-components";
-import Layout from "./renderer/components/template/Layout";
+import Layout from "./template/Layout";
 
 function App() {
   return (

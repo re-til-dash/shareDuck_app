@@ -24,12 +24,12 @@
       "@utils": ["src/utils/*"],
       "@/types": ["src/types/*"],
       "@assets": ["src/assets/*"],
-      "@main": ["src/main/*"],
-      "@config": ["src/main/config/*"],
-      "@api": ["src/main/api/*"],
-      "@components": ["src/renderer/components/*"],
-      "@renderer": ["src/renderer/*"],
-      "@styles": ["src/renderer/styles/*"]
+      "@windows": ["src/windows/*"],
+      "@main": ["main/*"],
+      "@config": ["main/config/*"],
+      "@api": ["main/api/*"],
+      "@components": ["src/components/*"],
+      "@styles": ["src/styles/*"]
     }
   },
   "include": [
@@ -39,9 +39,16 @@
     "src/*.ts",
     "src/*.d.ts",
     "src/*.tsx",
+    "src/*.ts",
+    "src/*.d.ts",
+    "src/*.tsx",
     "src/**/*.ts",
     "src/**/*.tsx"
+    "src/**/*.tsx"
   ],
+
+  "references": [{ "path": "./tsconfig.node.json" }],
+  "exclude": ["node_modules"]
 
   "references": [{ "path": "./tsconfig.node.json" }],
   "exclude": ["node_modules"]
