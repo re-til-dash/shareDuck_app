@@ -2,8 +2,8 @@
 
 import { app } from "electron";
 
-import createWindow from "./windows/windows";
-import initializeApp from "./app";
+import createWindow from "./windows/windows.ts";
+import initializeApp from "./app.ts";
 
 app.on("ready", createWindow);
 app.on("activate", initializeApp);

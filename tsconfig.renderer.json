@@ -7,11 +7,6 @@
     "moduleResolution": "bundler",
     "resolveJsonModule": true
   },
-  "include": [
-    "src/renderer/*.ts",
-    "src/renderer/*.tsx",
-    "src/renderer/**/*.ts",
-    "src/renderer/**/*.tsx"
-  ],
+  "include": ["src/*.ts", "src/*.tsx", "src/**/*.ts", "src/**/*.tsx"],
   "exclude": ["node_modules"]
 }

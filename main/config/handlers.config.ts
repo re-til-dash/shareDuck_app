@@ -1,10 +1,20 @@
-import getCategories from "../api/getCategories";
-import getUsers from "../api/getUser";
-import postUsers from "../api/postUsers";
+import getCategories from "../api/getCategories.ts";
+import getUsers from "../api/getUser.ts";
+import postUsers from "../api/postUsers.ts";
 
 const handlers = {
-  catgories: { get: getCategories, post: null, patch: null, delete: null },
-  users: { get: getUsers, post: postUsers, patch: null, delete: null },
+  catgories: {
+    get: getCategories,
+    post: () => {},
+    patch: () => {},
+    delete: () => {},
+  },
+  users: {
+    get: getUsers,
+    post: postUsers,
+    patch: () => {},
+    delete: () => {},
+  },
 };
 
 export default handlers;
