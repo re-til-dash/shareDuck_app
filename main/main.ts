@@ -1,20 +1,11 @@
 //메인 프로세스 진입점 파일
 
-import { app, BrowserWindow } from "electron";
-import path from "path";
+import { app } from "electron";
 
-function createWindow() {
-  const mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
-    webPreferences: {
-      preload: path.join(__dirname, "preload.js"),
-    },
-  });
-
-  mainWindow.loadURL("http://localhost:3000");
-}
+import createWindow from "./windows/windows.ts";
+import initializeApp from "./app.ts";
 
 app.on("ready", createWindow);
+app.on("activate", initializeApp);
 
 export default app;
