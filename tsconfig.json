@@ -1,18 +1,15 @@
 {
   "compilerOptions": {
-    "target": "ES2020",
+    "jsx": "react-jsx",
     "useDefineForClassFields": true,
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
-    "module": "ESNext",
     "skipLibCheck": true,
 
     /* Bundler mode */
-    "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
-    "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx",
+    "esModuleInterop": true,
 
     /* Linting */
     "strict": true,
@@ -25,7 +22,7 @@
       "@*": ["src/*"],
       "@hooks": ["src/hooks/*"],
       "@utils": ["src/utils/*"],
-      "@types": ["src/types/*"],
+      "@/types": ["src/types/*"],
       "@assets": ["src/assets/*"],
       "@service": ["src/service/*"],
       "@main": ["main/*"],
@@ -38,22 +35,14 @@
   "include": [
     "vite.config.ts",
     "package.json",
-    "src",
     "electron",
+    "src/*.ts",
+    "src/*.d.ts",
+    "src/*.tsx",
     "src/**/*.ts",
-    "src/**/*.d.ts",
-    "src/**/*.tsx",
-    "*.ts"
+    "src/**/*.tsx"
   ],
-  "include": [
-    "vite.config.ts",
-    "package.json",
-    "src",
-    "electron",
-    "src/**/*.ts",
-    "src/**/*.d.ts",
-    "src/**/*.tsx",
-    "*.ts"
-  ],
-  "references": [{ "path": "./tsconfig.node.json" }]
+
+  "references": [{ "path": "./tsconfig.node.json" }],
+  "exclude": ["node_modules"]
 }
