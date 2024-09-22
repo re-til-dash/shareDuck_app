@@ -26,12 +26,13 @@ process.env.VITE_PUBLIC = VITE_DEV_SERVER_URL
   : RENDERER_DIST;
 
 let mainWindow: BrowserWindow | null;
-
 export default function createWindow() {
   mainWindow = new BrowserWindow({
     icon: path.join(process.env.VITE_PUBLIC as string, "shareoluck-logo.svg"),
     webPreferences: {
       preload: path.join(__dirname, "preload.mjs"),
+      contextIsolation: true,
+      nodeIntegration: false,
     },
   });
 
@@ -48,6 +49,8 @@ export default function createWindow() {
     mainWindow.webContents.openDevTools();
   } else {
     // win.loadFile('dist/index.html')
+
     mainWindow.loadFile(path.join(RENDERER_DIST, "index.html"));
+    mainWindow.setMenu(null);
   }
 }
