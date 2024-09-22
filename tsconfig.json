@@ -25,9 +25,9 @@
       "@/types": ["src/types/*"],
       "@assets": ["src/assets/*"],
       "@windows": ["src/windows/*"],
-      "@main": ["src/main/*"],
-      "@config": ["src/main/config/*"],
-      "@api": ["src/main/api/*"],
+      "@main": ["main/*"],
+      "@config": ["main/config/*"],
+      "@api": ["main/api/*"],
       "@components": ["src/components/*"],
       "@styles": ["src/styles/*"]
     }
@@ -39,13 +39,10 @@
     "src/*.ts",
     "src/*.d.ts",
     "src/*.tsx",
-    "src/*.ts",
-    "src/*.d.ts",
-    "src/*.tsx",
     "src/**/*.ts",
     "src/**/*.tsx",
     "src/types/preload.d.ts",
-    "src/types/preload.d.ts"
+    "vite-env.d.ts"
   ],
 
   "references": [{ "path": "./tsconfig.node.json" }],
