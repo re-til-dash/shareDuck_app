@@ -1,4 +1,4 @@
-import { MouseEventHandler, useState } from "react";
+import { MouseEventHandler, useEffect, useState } from "react";
 import { User, userData } from "@/types/user";
 
 import styled from "styled-components";
@@ -21,6 +21,17 @@ export default function Sidebar() {
       userId: userInfo.userId as number,
     },
   ]);
+
+  useEffect(() => {
+    window.shareDuck
+      .invoke("categories-get-ipc")
+      .then((res) => {
+        const data = JSON.parse(res);
+        _setCategories(data.categories);
+        return res;
+      })
+      .catch((error) => console.log(error));
+  }, []);
 
   const navigate = useNavigate();
 
