@@ -5,9 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build:main": "tsc --project tsconfig.main.json",
-    "build:renderer": "tsc --project tsconfig.renderer.json",
-    "build": "yarn build:main && yarn build:renderer",
+    "build": "vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "electron": "electron ."
@@ -15,6 +13,7 @@
   "dependencies": {
     "@tanstack/react-query": "^5.56.2",
     "axios": "^1.7.7",
+    "dotenv": "^16.4.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.26.2",
