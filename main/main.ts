@@ -34,6 +34,8 @@ function initializeApp() {
       }
       case "CLOSE": {
         mainWindow.close();
+        //!!개발모드에서만 다음코드 사용
+        app.quit();
         break;
       }
       default:
