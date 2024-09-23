@@ -1,13 +1,16 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 
 import axios from "axios";
+const baseURL = import.meta.env.VITE_BASE_KEY;
+const testToken = import.meta.env.VITE_TOKEN_KEY;
 
 const api = axios.create({
   headers: {
     "Content-Type": "application/json  charset=utf-8",
+    Authorization: `Baerer ${testToken}`,
   },
 });
-const baseURL = import.meta.env.VITE_BASE_KEY;
+
 api.defaults.baseURL = baseURL;
 // 모든 요청은 시간 초과 전 2.5초 대기하는 인스턴스를 사용합니다.
 //api.defaults.timeout = 2500;
