@@ -25,6 +25,7 @@
       "@/types": ["src/types/*"],
       "@assets": ["src/assets/*"],
       "@windows": ["src/windows/*"],
+      "@pages": ["src/pages/*"],
       "@main": ["main/*"],
       "@config": ["main/config/*"],
       "@api": ["main/api/*"],

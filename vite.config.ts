@@ -58,6 +58,10 @@ export default defineConfig({
         replacement: path.resolve(__dirname, "./src/windows"),
       },
       {
+        find: "@pages",
+        replacement: path.resolve(__dirname, "./src/pages"),
+      },
+      {
         find: "@main",
         replacement: path.resolve(__dirname, "./main"),
       },
