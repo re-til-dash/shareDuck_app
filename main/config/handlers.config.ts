@@ -1,10 +1,10 @@
-import getCategories from "../api/getCategories.ts";
 import getUsers from "../api/getUser.ts";
 import postUsers from "../api/postUsers.ts";
+import handleGetCategories from "../handlers/categories/handleGet.ts";
 
 const handlers = {
   categories: {
-    get: getCategories,
+    get: handleGetCategories,
     post: () => {},
     patch: () => {},
     delete: () => {},
@@ -16,5 +16,7 @@ const handlers = {
     delete: () => {},
   },
 };
+
+export type typeHandlers = keyof typeof handlers;
 
 export default handlers;

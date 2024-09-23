@@ -3,9 +3,19 @@
 import { app } from "electron";
 
 import createWindow from "./windows/windows.ts";
-import initializeApp from "./app.ts";
+import registerIpcHandler, { typeMethod } from "./ipcHandlers.ts";
+import handlers, { typeHandlers } from "./config/handlers.config.ts";
+const methdos: typeMethod[] = ["get", "post", "patch", "delete"];
+function initializeApp() {
+  const keys = Object.keys(handlers) as typeHandlers[];
+  methdos.forEach((method) => {
+    keys.forEach((key) => registerIpcHandler(method, key));
+  });
 
-app.on("ready", createWindow);
-app.on("activate", initializeApp);
+  createWindow();
+  app.setName("shareDuck");
+}
+
+app.on("ready", initializeApp);
 
 export default app;

@@ -1,9 +1,9 @@
-import { MouseEventHandler, useState } from "react";
+import { MouseEventHandler, useEffect, useState } from "react";
 import { User, userData } from "@/types/user";
 
 import styled from "styled-components";
 import { typeCategory } from "@/types/category";
-import { Button, Details, FloatingButton, Profile } from "shareduck-ui";
+import { Button, Details, FloatingButton, List, Profile } from "shareduck-ui";
 import { useNavigate } from "react-router";
 
 export default function Sidebar() {
@@ -22,10 +22,22 @@ export default function Sidebar() {
     },
   ]);
 
+  useEffect(() => {
+    window.shareDuck
+      .invoke("categories-get-ipc")
+      .then((res) => {
+        const data = res;
+        _setCategories(data.categories);
+        return res;
+      })
+      .catch((error) => console.log(error));
+  }, []);
+
   const navigate = useNavigate();
 
   /**local state*/
-  const [selected, setSelected] = useState("Home");
+  const [selected, setSelected] = useState(0);
+  const [selectedCategories, setSelectedCategories] = useState(selected);
   //처음에는 Home 카테고리이며, Home은 하위 메뉴가 없으므로 99로 초기화
 
   const [show, setShow] = useState(true);
@@ -33,7 +45,10 @@ export default function Sidebar() {
   /**event handler*/
   const handleClickCaptureCategory: MouseEventHandler = (e) => {
     const target = e.target as HTMLElement;
-    navigate(`/${target.innerText.toLowerCase()}`);
+    const menu = target.innerText.toLocaleLowerCase();
+    if (menu === "overview" || menu === "post") {
+      navigate(`/${selectedCategories}/${menu}`);
+    } else navigate(`/${menu}`);
   };
   const handleClickNew: MouseEventHandler = (e) => {
     e.preventDefault();
@@ -55,12 +70,17 @@ export default function Sidebar() {
           </Profile.Group>
         )}
       </Profile>
-      <section onClickCapture={handleClickCaptureCategory}>
+      <section
+        style={{ overflow: "auto", overflowX: "hidden" }}
+        onClickCapture={handleClickCaptureCategory}
+      >
         <Details
-          open={selected === "Home"}
+          open={selected === 0}
           lists={[]}
-          onClick={() => setSelected("Home")}
           id="home"
+          onClick={() => {
+            setSelected(0);
+          }}
         >
           <Details.Icon src="message_dark" alt="message" />
           {show && <Details.Text>Home</Details.Text>}
@@ -70,9 +90,12 @@ export default function Sidebar() {
             <Details
               key={id}
               id={name.toLowerCase()}
-              open={selected === name}
+              open={selected === id}
               lists={show ? DEFAULT_CATEGORIES : []}
-              onClick={() => setSelected(name)}
+              onClickCapture={() => {
+                setSelected(id);
+                setSelectedCategories(id);
+              }}
             >
               <Details.Icon src="message_dark" alt="message" />
               {show && <Details.Text>{name}</Details.Text>}

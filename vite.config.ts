@@ -10,21 +10,17 @@ export default defineConfig({
     electron({
       main: {
         // Shortcut of `build.lib.entry`.
-        entry: "electron/main.ts",
+        entry: "main/main.ts",
       },
       preload: {
         // Shortcut of `build.rollupOptions.input`.
         // Preload scripts may contain Web assets, so use the `build.rollupOptions.input` instead `build.lib.entry`.
-        input: path.join(__dirname, "electron/preload.ts"),
+        input: path.join(__dirname, "main/preload.ts"),
       },
       // Ployfill the Electron and Node.js API for Renderer process.
       // If you want use Node.js in Renderer process, the `nodeIntegration` needs to be enabled in the Main process.
       // See 👉 https://github.com/electron-vite/vite-plugin-electron-renderer
-      renderer:
-        process.env.NODE_ENV === "test"
-          ? // https://github.com/electron-vite/vite-plugin-electron-renderer/issues/78#issuecomment-2053600808
-            undefined
-          : {},
+      renderer: {},
     }),
   ],
   resolve: {
@@ -54,25 +50,22 @@ export default defineConfig({
         replacement: path.resolve(__dirname, "./src/types"),
       },
       {
+        find: "@styles",
+        replacement: path.resolve(__dirname, "./src/styles"),
+      },
+      {
         find: "@windows",
         replacement: path.resolve(__dirname, "./src/windows"),
+      },
+      {
+        find: "@pages",
+        replacement: path.resolve(__dirname, "./src/pages"),
       },
       {
         find: "@main",
         replacement: path.resolve(__dirname, "./main"),
       },
-      {
-        find: "@styles",
-        replacement: path.resolve(__dirname, "./src/renderer/styles"),
-      },
-      {
-        find: "@config",
-        replacement: path.resolve(__dirname, "./src/main/config"),
-      },
-      {
-        find: "@api",
-        replacement: path.resolve(__dirname, "./src/main/api"),
-      },
+
       {
         find: "@config",
         replacement: path.resolve(__dirname, "./main/config"),
