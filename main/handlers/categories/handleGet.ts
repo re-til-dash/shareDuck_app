@@ -1,10 +1,17 @@
 import { safeStorage } from "electron";
 import fs from "fs";
 import path from "path";
+<<<<<<< HEAD
+import getCategories from "../../api/getCategories";
+import hasLocalFile from "../../utils/hasLocalFile";
+import createLocalFile from "../../utils/createLocalFile";
+import { userDataPath } from "../../utils/createFolder";
+=======
 import getCategories from "../../api/getCategories.ts";
 import hasLocalFile from "../../utils/hasLocalFile.ts";
 import createLocalFile from "../../utils/createLocalFile.ts";
 import { userDataPath } from "../../utils/createFolder.ts";
+>>>>>>> main
 
 const FILE_NAME = "categories.json";
 
@@ -26,6 +33,10 @@ export default async function handleGetCategories() {
 
   // 3. 파일이 없거나 읽기 오류 발생 시 API 호출
   let result = await getCategories();
+<<<<<<< HEAD
+  console.log(result);
+=======
+>>>>>>> main
   // 4. API 결과가 없으면 기본 데이터 사용
   if (!result) {
     result = {
