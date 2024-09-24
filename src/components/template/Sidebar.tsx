@@ -136,10 +136,11 @@ const StyledAside = styled.aside`
   display: flex;
   flex-direction: column;
   width: fit-content;
-  height: 100vh;
+  height: calc(100vh - 32px);
   padding: 24px 16px;
   border-radius: 0px 16px 16px 0px;
   background: #fff;
+  margin-top: 32px;
 
   /* ej_b50 */
   box-shadow: 0px 1px 50px 0px rgba(0, 0, 0, 0.1);
