@@ -16,7 +16,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.26.2",
-    "shareduck-ui": "^0.0.23",
+    "shareduck-ui": "^0.0.24",
     "styled-components": "^6.1.13"
   },
   "devDependencies": {

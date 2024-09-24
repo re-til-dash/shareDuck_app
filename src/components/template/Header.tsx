@@ -1,10 +1,6 @@
 import { MouseEventHandler, useEffect, useState } from "react";
-import { Button, Icon } from "shareduck-ui";
+import { TitlebarIcons } from "shareduck-ui";
 import styled from "styled-components";
-
-import CloseIcon from "@assets/titlebar-close.svg";
-import MinIcon from "@assets/titlebar-min.svg";
-import SizeIcon from "@assets/titlebar-size.svg";
 
 export default function Header() {
   const [size, setSize] = useState(true); //min
@@ -12,10 +8,10 @@ export default function Header() {
     if (size) window.shareDuck.send("title-bar-action", "MAX");
     else window.shareDuck.send("title-bar-action", "MAX");
   }, [size]);
-  const handleClickMax: MouseEventHandler = (_e) => {
+  const handleClickSize: MouseEventHandler = (_e) => {
     setSize(!size);
   };
-  const handleClickRestore: MouseEventHandler = (_e) => {
+  const handleClickDown: MouseEventHandler = (_e) => {
     window.shareDuck.send("title-bar-action", "CLOSE_MIN");
   };
   const handleClickClose: MouseEventHandler = (_e) => {
@@ -24,17 +20,11 @@ export default function Header() {
   return (
     <StyledHeader onDoubleClick={(e) => e.preventDefault()}>
       <StyledDrag onDoubleClick={(e) => e.preventDefault()}></StyledDrag>
-      <StyledButtons>
-        <Button onClick={handleClickRestore}>
-          <img src={MinIcon} alt="minimize" />
-        </Button>
-        <Button onClick={handleClickMax}>
-          <img src={SizeIcon} alt="size" />
-        </Button>
-        <Button onClick={handleClickClose}>
-          <img src={CloseIcon} alt="close" />
-        </Button>
-      </StyledButtons>
+      <TitlebarIcons os="WIN">
+        <TitlebarIcons.Down onClick={handleClickDown} />
+        <TitlebarIcons.Size onClick={handleClickSize} />
+        <TitlebarIcons.Close onClick={handleClickClose} />
+      </TitlebarIcons>
     </StyledHeader>
   );
 }
@@ -62,21 +52,4 @@ const StyledDrag = styled.div`
   -webkit-user-select: none;
   user-select: none;
   /* Allow user to drag the window using this titlebar */
-`;
-
-const StyledButtons = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  gap: 16px;
-  width: fit-content;
-
-  & > button {
-    min-width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    background: var(--wb-100, #efe9f1);
-    padding: 5px;
-  }
 `;
