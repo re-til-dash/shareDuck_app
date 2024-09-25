@@ -22,16 +22,16 @@ export default function Sidebar() {
     },
   ]);
 
-  useEffect(() => {
-    window.shareDuck
-      .invoke("categories-get-ipc")
-      .then((res) => {
-        const data = res;
-        _setCategories(data.categories);
-        return res;
-      })
-      .catch((error) => console.log(error));
-  }, []);
+  // useEffect(() => {
+  //   window.shareDuck
+  //     .invoke("categories-get-ipc")
+  //     .then((res) => {
+  //       const data = res;
+  //       _setCategories(data.categories);
+  //       return res;
+  //     })
+  //     .catch((error) => console.log(error));
+  // }, []);
 
   const navigate = useNavigate();
 
@@ -105,6 +105,16 @@ export default function Sidebar() {
       <Button style={{ marginRight: 0 }} type="button" onClick={handleClickNew}>
         <Button.Icon src={"plus"} alt={"plus"} />
         {show && <Button.Text>New Category</Button.Text>}
+      </Button>
+      <Button
+        style={{ marginRight: 0 }}
+        type="button"
+        onClick={() => {
+          navigate("/writepage");
+        }}
+      >
+        <Button.Icon src={"plus"} alt={"plus"} />
+        {show && <Button.Text>Write Page</Button.Text>}
       </Button>
       <StyledSettingsSection>
         <Button
