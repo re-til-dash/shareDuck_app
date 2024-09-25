@@ -5724,7 +5724,7 @@ __metadata:
     react-editor-js: "npm:^2.1.0"
     react-hook-form: "npm:^7.53.0"
     react-router-dom: "npm:^6.26.2"
-    shareduck-ui: "npm:^0.0.23"
+    shareduck-ui: "npm:^0.0.25"
     styled-components: "npm:^6.1.13"
     tinymce: "npm:^7.3.0"
     typescript: "npm:^5.2.2"
@@ -5735,9 +5735,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"shareduck-ui@npm:^0.0.23":
-  version: 0.0.23
-  resolution: "shareduck-ui@npm:0.0.23"
+"shareduck-ui@npm:^0.0.25":
+  version: 0.0.25
+  resolution: "shareduck-ui@npm:0.0.25"
   dependencies:
     "@testing-library/dom": "npm:^10.3.0"
     "@testing-library/jest-dom": "npm:^6.4.6"
@@ -5750,7 +5750,7 @@ __metadata:
     react: ^18.2.0
     react-dom: ^18.2.0
     styled-components: ^6.1.11
-  checksum: 10c0/14238167cd750febf3a8e30787164c38a6a65a8c48515fd62d1f6c1988b93b4a13a4a72551ac723bd196a8d617df314391530f260166f1c8e1c787da38ffbbea
+  checksum: 10c0/8d23445de3fc30ddf80b8910281bd444fa1a7976afcd5f624d44f7bcce8fe7b6a131e075a6172db08e32af4fc39b1fd82a1934c1779352ad8110b0639954b339
   languageName: node
   linkType: hard
 

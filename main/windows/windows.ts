@@ -1,6 +1,7 @@
 import { BrowserWindow } from "electron";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
+import { WINDOW_DEFAULT_SIZE } from "../config/window.config";
 
 // const require = createRequire(import.meta.url)
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -28,6 +29,10 @@ process.env.VITE_PUBLIC = VITE_DEV_SERVER_URL
 let mainWindow: BrowserWindow | null;
 export default function createWindow() {
   mainWindow = new BrowserWindow({
+    frame: false,
+    maximizable: false,
+
+    ...WINDOW_DEFAULT_SIZE,
     icon: path.join(process.env.VITE_PUBLIC as string, "shareoluck-logo.svg"),
     webPreferences: {
       preload: path.join(__dirname, "preload.mjs"),
@@ -53,4 +58,5 @@ export default function createWindow() {
     mainWindow.loadFile(path.join(RENDERER_DIST, "index.html"));
     mainWindow.setMenu(null);
   }
+  return mainWindow;
 }

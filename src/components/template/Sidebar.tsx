@@ -3,7 +3,17 @@ import { User, userData } from "@/types/user";
 
 import styled from "styled-components";
 import { typeCategory } from "@/types/category";
-import { Button, Details, FloatingButton, List, Profile } from "shareduck-ui";
+import {
+  ArrowLeftIcon,
+  ArrowRightIcon,
+  Button,
+  Details,
+  HomeIcon,
+  IconButton,
+  PlusIcon,
+  Profile,
+  SettingIcon,
+} from "shareduck-ui";
 import { useNavigate } from "react-router";
 
 export default function Sidebar() {
@@ -82,7 +92,7 @@ export default function Sidebar() {
             setSelected(0);
           }}
         >
-          <Details.Icon src="message_dark" alt="message" />
+          <Details.Icon src={HomeIcon} alt="home" />
           {show && <Details.Text>Home</Details.Text>}
         </Details>
         {categories.length > 0 &&
@@ -97,13 +107,13 @@ export default function Sidebar() {
                 setSelectedCategories(id);
               }}
             >
-              <Details.Icon src="message_dark" alt="message" />
+              <Details.Icon src={ArrowRightIcon} alt={name} />
               {show && <Details.Text>{name}</Details.Text>}
             </Details>
           ))}
       </section>
       <Button style={{ marginRight: 0 }} type="button" onClick={handleClickNew}>
-        <Button.Icon src={"plus"} alt={"plus"} />
+        <Button.Icon src={PlusIcon} alt="add new category" />
         {show && <Button.Text>New Category</Button.Text>}
       </Button>
       <Button
@@ -122,7 +132,7 @@ export default function Sidebar() {
           type="button"
           onClick={handleClickSetting}
         >
-          <Button.Icon src={"plus"} alt={"plus"} />
+          <Button.Icon src={SettingIcon} alt="setting" />
           {show && <Button.Text>Settings</Button.Text>}
         </Button>
         <Button
@@ -130,13 +140,16 @@ export default function Sidebar() {
           type="button"
           onClick={handleClickLogOut}
         >
-          <Button.Icon src={"plus"} alt={"plus"} />
+          {/* 임시 아이콘 */}
+          <Button.Icon src={PlusIcon} alt="log out" />
           {show && <Button.Text>Log-out</Button.Text>}
         </Button>
       </StyledSettingsSection>
-      <StyledMoreFloatButton onClick={handleClickShow}>
-        {show ? "<" : ">"}
-      </StyledMoreFloatButton>
+      <StyledMoreFloatButton
+        onClick={handleClickShow}
+        src={show ? ArrowLeftIcon : ArrowRightIcon}
+        alt="open/close sidebar"
+      />
     </StyledAside>
   );
 }
@@ -146,10 +159,11 @@ const StyledAside = styled.aside`
   display: flex;
   flex-direction: column;
   width: fit-content;
-  height: 100vh;
+  height: calc(100vh - 32px);
   padding: 24px 16px;
   border-radius: 0px 16px 16px 0px;
   background: #fff;
+  margin-top: 32px;
 
   /* ej_b50 */
   box-shadow: 0px 1px 50px 0px rgba(0, 0, 0, 0.1);
@@ -163,7 +177,7 @@ const StyledAside = styled.aside`
   }
 `;
 
-const StyledMoreFloatButton = styled(FloatingButton)`
+const StyledMoreFloatButton = styled(IconButton.Primary)`
   position: absolute;
   z-index: 10;
   background: #fff;
@@ -172,7 +186,9 @@ const StyledMoreFloatButton = styled(FloatingButton)`
   inset: 0;
   margin: auto;
   margin-right: 0;
-  transform: translateX(2rem);
+  width: fit-content;
+  height: fit-content;
+  transform: translateX(1rem);
 `;
 
 const StyledSettingsSection = styled.section`
@@ -184,7 +200,5 @@ const StyledSettingsSection = styled.section`
   & button > span {
     width: 100%;
     color: var(--color-wb-700, #3a373a);
-
-    /* typo/typo-body-14-bold */
   }
 `;
