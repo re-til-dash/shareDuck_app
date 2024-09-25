@@ -9,12 +9,15 @@ import {
   Button,
   Details,
   HomeIcon,
+  Icon,
   IconButton,
   PlusIcon,
   Profile,
   SettingIcon,
 } from "shareduck-ui";
 import { useNavigate } from "react-router";
+
+type TypeHandler = (id: number) => MouseEventHandler;
 
 export default function Sidebar() {
   const DEFAULT_CATEGORIES = [
@@ -47,17 +50,17 @@ export default function Sidebar() {
 
   /**local state*/
   const [selected, setSelected] = useState(0);
-  const [selectedCategories, setSelectedCategories] = useState(selected);
-  //처음에는 Home 카테고리이며, Home은 하위 메뉴가 없으므로 99로 초기화
-
+  //sidebar 펼치기/접기
   const [show, setShow] = useState(true);
+  //카테고로 설정 보기/숨기기
+  const [isShowSetting, setIsShowSetting] = useState(0);
 
   /**event handler*/
   const handleClickCaptureCategory: MouseEventHandler = (e) => {
     const target = e.target as HTMLElement;
     const menu = target.innerText.toLocaleLowerCase();
     if (menu === "overview" || menu === "post") {
-      navigate(`/${selectedCategories}/${menu}`);
+      navigate(`/${selected}/${menu}`);
     } else navigate(`/${menu}`);
   };
   const handleClickNew: MouseEventHandler = (e) => {
@@ -68,6 +71,13 @@ export default function Sidebar() {
   const handleClickShow: MouseEventHandler = () => {
     setShow(!show);
   };
+
+  //개별 카테고리 세팅
+  const handleMouseCategory: TypeHandler = (id) => (_e) => {
+    setIsShowSetting(id);
+  };
+
+  const handleClickCategorySetting: MouseEventHandler = (_e) => {};
 
   return (
     <StyledAside>
@@ -98,17 +108,26 @@ export default function Sidebar() {
         {categories.length > 0 &&
           categories.map(({ id, name }) => (
             <Details
+              style={{ position: "relative" }}
               key={id}
               id={name.toLowerCase()}
               open={selected === id}
               lists={show ? DEFAULT_CATEGORIES : []}
               onClickCapture={() => {
                 setSelected(id);
-                setSelectedCategories(id);
               }}
+              onMouseOver={handleMouseCategory(id)}
+              onMouseLeave={handleMouseCategory(0)}
             >
               <Details.Icon src={ArrowRightIcon} alt={name} />
               {show && <Details.Text>{name}</Details.Text>}
+              {isShowSetting === id && (
+                <StyledSettingIcon
+                  onClick={handleClickCategorySetting}
+                  src={SettingIcon}
+                  alt="setting"
+                />
+              )}
             </Details>
           ))}
       </section>
@@ -191,4 +210,15 @@ const StyledSettingsSection = styled.section`
     width: 100%;
     color: var(--color-wb-700, #3a373a);
   }
+`;
+
+const StyledSettingIcon = styled.img`
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  margin-top: 1rem;
+  margin-right: 1rem;
+
+  background-color: var(--wb-000);
+  border-radius: 50%;
 `;
