@@ -11,9 +11,11 @@ const EnhancedTinyMCEExample: React.FC = () => {
 
   return (
     <Editor
-      // @ts-ignore
+    apiKey="ijcvu2l5rz12w8pd4z4g790x5pqqpsluxr0zzjsfyzdfal4f"
+    // @ts-ignore
       // TODO: 일단 타입에러 나는데, 무시함
-      apiKey={import.meta.env.VITE_TINYMCE_EDITOR_API_KEY}
+      // env 파일에 저장했다가, ignore되니까 다른 분들은 안될것 같아서 일단 때려 박은 상태, 나중에 변경경
+      // apiKey={import.meta.env.VITE_TINYMCE_EDITOR_API_KEY}
       onInit={(evt, editor) => (editorRef.current = editor)}
       initialValue="<p>Welcome to the enhanced TinyMCE editor!</p>"
       init={{
