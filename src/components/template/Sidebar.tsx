@@ -9,13 +9,14 @@ import {
   Button,
   Details,
   HomeIcon,
-  Icon,
   IconButton,
+  LogOutIcon,
   PlusIcon,
   Profile,
   SettingIcon,
 } from "shareduck-ui";
 import { useNavigate } from "react-router";
+import CategorySettingDialog from "@components/dialog/CategorySettingDialog";
 
 type TypeHandler = (id: number) => MouseEventHandler;
 
@@ -53,6 +54,7 @@ export default function Sidebar() {
   //sidebar 펼치기/접기
   const [show, setShow] = useState(true);
   //카테고로 설정 보기/숨기기
+  const [isShowDialog, setIsShowDialog] = useState(false);
   const [isShowSetting, setIsShowSetting] = useState(0);
 
   /**event handler*/
@@ -77,7 +79,10 @@ export default function Sidebar() {
     setIsShowSetting(id);
   };
 
-  const handleClickCategorySetting: MouseEventHandler = (_e) => {};
+  const handleClickCategorySetting: MouseEventHandler = (e) => {
+    e.stopPropagation();
+    setIsShowDialog((prev) => !prev);
+  };
 
   return (
     <StyledAside>
@@ -106,12 +111,12 @@ export default function Sidebar() {
           {show && <Details.Text>Home</Details.Text>}
         </Details>
         {categories.length > 0 &&
-          categories.map(({ id, name }) => (
+          categories.map(({ id, name, properties }) => (
             <Details
               style={{ position: "relative" }}
               key={id}
               id={name.toLowerCase()}
-              open={selected === id}
+              open={!isShowDialog && selected === id}
               lists={show ? DEFAULT_CATEGORIES : []}
               onClickCapture={() => {
                 setSelected(id);
@@ -126,6 +131,17 @@ export default function Sidebar() {
                   onClick={handleClickCategorySetting}
                   src={SettingIcon}
                   alt="setting"
+                />
+              )}
+              {isShowDialog && (
+                <CategorySettingDialog
+                  key={id}
+                  categoryId={id}
+                  name={name}
+                  properties={properties as { [key: string]: string }}
+                  open={isShowDialog}
+                  setOpen={setIsShowDialog}
+                  setCategories={_setCategories}
                 />
               )}
             </Details>
@@ -149,8 +165,7 @@ export default function Sidebar() {
           type="button"
           onClick={handleClickLogOut}
         >
-          {/* 임시 아이콘 */}
-          <Button.Icon src={PlusIcon} alt="log out" />
+          <Button.Icon src={LogOutIcon} alt="log out" />
           {show && <Button.Text>Log-out</Button.Text>}
         </Button>
       </StyledSettingsSection>
@@ -208,7 +223,7 @@ const StyledSettingsSection = styled.section`
   }
   & button > span {
     width: 100%;
-    color: var(--color-wb-700, #3a373a);
+    color: var(--wb-700, #3a373a);
   }
 `;
 
@@ -218,6 +233,8 @@ const StyledSettingIcon = styled.img`
   margin: auto;
   margin-top: 1rem;
   margin-right: 1rem;
+  padding: 4px;
+  z-index: 9;
 
   background-color: var(--wb-000);
   border-radius: 50%;
