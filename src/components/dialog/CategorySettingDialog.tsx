@@ -1,4 +1,4 @@
-import { typeCategory } from "@/types/category";
+import { TypeReducerParams } from "@components/template/Sidebar";
 import {
   DialogHTMLAttributes,
   Dispatch,
@@ -9,6 +9,7 @@ import {
 import { Button, Input, TitlebarIcons } from "shareduck-ui";
 import styled, { css } from "styled-components";
 
+//단일 카테고리 가져오는 API 나오는 대로 수정할 예정
 export interface TypeCategoryData
   extends DialogHTMLAttributes<HTMLDialogElement> {
   categoryId: number;
@@ -17,7 +18,7 @@ export interface TypeCategoryData
     [key: string]: string;
   };
   setOpen: Dispatch<SetStateAction<boolean>>;
-  setCategories: Dispatch<SetStateAction<typeCategory[]>>;
+  setCategories: Dispatch<TypeReducerParams> | null;
 }
 
 export default function CategorySettingDialog({
@@ -41,15 +42,11 @@ export default function CategorySettingDialog({
       properties: newProperty && properties,
     };
 
-    //dialog의 submit 결과를 sidebar에 반영하기 위해 상위 컴포넌트인 sidebar에서 setCategories를 넘겨 이렇게 바꿈으로써 상위 컴포넌트까지 리렌더링 시키는 중
-    //dialog의 위치상 이렇게 할 수 밖에 없다고 생각하는데, sidebar에 context api를 사용해 리팩토링할 예정
-    setCategories((prev) => {
-      const excepts = prev.filter((p) => p.id != categoryId);
-      return [
-        ...excepts,
-        { id: categoryId, ...newData, userId: prev[0].userId } as typeCategory,
-      ];
-    });
+    if (setCategories)
+      setCategories({
+        action: "UPDATE",
+        value: { id: categoryId, ...newData },
+      });
     window.shareDuck
       .invoke("categories-patch-ipc", categoryId, JSON.stringify(newData))
       .then((res) => console.log(res))
