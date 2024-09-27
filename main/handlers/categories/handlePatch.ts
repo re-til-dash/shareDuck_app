@@ -7,7 +7,7 @@ import patchCategories from "../../api/patchCatagories.ts";
 
 const FILE_NAME = "categories.json";
 
-export default async function handlePatchCategories(_e, [categoryId, newData]) {
+export default async function handlePatchCategories(categoryId, newData) {
   // 1. API 호출
   let result = await patchCategories(categoryId, newData);
 
