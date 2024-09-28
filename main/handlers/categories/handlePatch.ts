@@ -3,7 +3,7 @@ import path from "path";
 import hasLocalFile from "../../utils/hasLocalFile.ts";
 import createLocalFile from "../../utils/createLocalFile.ts";
 import { userDataPath } from "../../utils/createFolder.ts";
-import patchCategories from "../../api/patchCatagories.ts";
+import patchCategories from "../../api/categories/patchCatagories.ts";
 
 const FILE_NAME = "categories.json";
 

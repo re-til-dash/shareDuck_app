@@ -1,4 +1,4 @@
-import api from "../config/api.config.ts";
+import api from "../../config/api.config.ts";
 
 interface typeNewUser {
   email: string;
