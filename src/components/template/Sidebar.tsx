@@ -18,11 +18,11 @@ import {
   HomeIcon,
   IconButton,
   LogOutIcon,
-  PlusIcon,
   Profile,
   SettingIcon,
 } from "shareduck-ui";
 import Categories from "@components/sidebar/Categories";
+import NewCategory from "@components/sidebar/NewCategory";
 
 export interface TypeSidebarContext {
   user: Partial<User>;
@@ -57,6 +57,7 @@ function reducer(
       : prevState.splice(indexOfValue + 1, prevState.length);
   switch (action) {
     case "CREATE": {
+      window.shareDuck.invoke("categories-post-ipc", value);
       state = [...prevState, value as TypeCategory];
       break;
     }
@@ -66,10 +67,15 @@ function reducer(
         value as TypeCategory,
         ...nextCategoriesOfValue,
       ];
+      window.shareDuck.invoke("categories-patch-ipc", value.id, {
+        name: value.name,
+        properties: value.properties,
+      });
       break;
     }
     case "DELETE": {
       state = [...exceptsValueInPrevState];
+      window.shareDuck.invoke("categories-delete-ipc", value);
       break;
     }
     default: {
@@ -124,9 +130,6 @@ export default function Sidebar() {
   //sidebar 펼치기/접기
   const [show, setShow] = useState(true);
 
-  const handleClickNew: MouseEventHandler = (e) => {
-    e.preventDefault();
-  };
   const handleClickSetting: MouseEventHandler = (_e) => {};
   const handleClickLogOut: MouseEventHandler = (_e) => {};
   const handleClickShow: MouseEventHandler = () => {
@@ -157,14 +160,7 @@ export default function Sidebar() {
           </Details>
           <Categories categories={categories} show={show} />
         </section>
-        <Button
-          style={{ marginRight: 0 }}
-          type="button"
-          onClick={handleClickNew}
-        >
-          <Button.Icon src={PlusIcon} alt="add new category" />
-          {show && <Button.Text>New Category</Button.Text>}
-        </Button>
+        <NewCategory show />
         <StyledSettingsSection>
           <Button
             style={{ marginRight: 0 }}

@@ -1,10 +1,11 @@
 import CategorySettingDialog from "@components/dialog/CategorySettingDialog";
 import { TypeCategory } from "@/types/category";
-import { MouseEventHandler, useContext, useState } from "react";
+import { MouseEventHandler, useContext, useRef, useState } from "react";
 import { useNavigate } from "react-router";
 import { ArrowRightIcon, Details, LogOutIcon, SettingIcon } from "shareduck-ui";
 import styled from "styled-components";
 import { SidebarContext } from "@components/template/Sidebar";
+import CategoryDeleteDialog from "@components/dialog/CategoryDeleteDialog";
 type TypeHandler = (id: number) => MouseEventHandler;
 
 export interface TypeCategoriesProps {
@@ -13,7 +14,7 @@ export interface TypeCategoriesProps {
 }
 
 export default function Categories({ show }: TypeCategoriesProps) {
-  const { user, categories, setCategories } = useContext(SidebarContext);
+  const { categories, setCategories } = useContext(SidebarContext);
 
   const DEFAULT_CATEGORIES = [
     { id: "Overview", list: <Details.Text>Overview</Details.Text> },
@@ -22,8 +23,13 @@ export default function Categories({ show }: TypeCategoriesProps) {
   const navigate = useNavigate();
   const [selected, setSelected] = useState(0);
   //카테고로 설정 보기/숨기기
-  const [isShowDialog, setIsShowDialog] = useState(false);
+  const [ref, setRef] = useState<HTMLImageElement | null>(null);
+  const settingIconRef = useRef(ref);
+  const deleteIconRef = useRef(ref);
   const [isShowSetting, setIsShowSetting] = useState(0);
+  const [currentCetgory, setCurrentCategory] = useState<TypeCategory | null>(
+    null
+  );
 
   /**event handler*/
   const handleClickCaptureCategory: MouseEventHandler = (e) => {
@@ -39,26 +45,32 @@ export default function Categories({ show }: TypeCategoriesProps) {
     setIsShowSetting(id);
   };
 
-  const handleClickCategorySetting: MouseEventHandler = (e) => {
-    e.stopPropagation();
-    setIsShowDialog((prev) => !prev);
-  };
+  const handleClickCategorySetting =
+    ({ id, name, properties, userId }: TypeCategory): MouseEventHandler =>
+    (e) => {
+      e.stopPropagation();
+      setRef(e.target as HTMLImageElement);
+      setCurrentCategory((_prev) => ({ id, name, properties, userId }));
+    };
 
-  const handleClickCategoryDelete: MouseEventHandler = (e) => {
-    e.stopPropagation();
-  };
+  const handleClickCategoryDelete =
+    ({ id, name, properties, userId }: TypeCategory): MouseEventHandler =>
+    (e) => {
+      e.stopPropagation();
+      setCurrentCategory((_prev) => ({ id, name, properties, userId }));
+    };
   return (
     <section onClickCapture={handleClickCaptureCategory}>
       {categories.length > 0 &&
-        categories.map(({ id, name, properties }) => (
+        categories.map(({ id, name, properties, userId }) => (
           <Details
             style={{ position: "relative" }}
             key={id}
             id={name.toLowerCase()}
-            open={!isShowDialog && selected === id}
+            open={selected === id}
             lists={show ? DEFAULT_CATEGORIES : []}
-            onClickCapture={() => {
-              setSelected(id);
+            onClick={() => {
+              setSelected((_prev) => id);
             }}
             onMouseOver={handleMouseCategory(id)}
             onMouseLeave={handleMouseCategory(0)}
@@ -68,25 +80,45 @@ export default function Categories({ show }: TypeCategoriesProps) {
             {isShowSetting === id && (
               <StyledIconList>
                 <StyledIcon
-                  onClick={handleClickCategorySetting}
+                  onClick={handleClickCategorySetting({
+                    id,
+                    name,
+                    properties,
+                    userId,
+                  })}
                   src={SettingIcon}
                   alt="setting"
+                  ref={settingIconRef}
                 />
                 <StyledIcon
-                  onClick={handleClickCategoryDelete}
+                  onClick={handleClickCategoryDelete({
+                    id,
+                    name,
+                    properties,
+                    userId,
+                  })}
                   src={LogOutIcon}
-                  alt="setting"
+                  alt="delete"
+                  ref={deleteIconRef}
                 />
               </StyledIconList>
             )}
-            {isShowDialog && (
+
+            {currentCetgory?.id && (
               <CategorySettingDialog
-                key={id}
-                categoryId={id}
-                name={name}
-                properties={properties as { [key: string]: string }}
-                open={isShowDialog}
-                setOpen={setIsShowDialog}
+                categoryId={currentCetgory.id}
+                name={currentCetgory.name}
+                properties={
+                  currentCetgory.properties as { [key: string]: string }
+                }
+                openTrigger={settingIconRef.current as HTMLElement}
+                setCategories={setCategories}
+              />
+            )}
+            {currentCetgory?.id && (
+              <CategoryDeleteDialog
+                category={currentCetgory}
+                openTrigger={deleteIconRef.current as HTMLElement}
                 setCategories={setCategories}
               />
             )}
