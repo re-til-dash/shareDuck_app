@@ -225,9 +225,13 @@ const StyledHashUlist = styled.ul`
 const StyledPageList = styled.div`
   display: flex;
   width: 215px;
+  height: fit-content;
   align-items: center;
   gap: 40px;
+  position: fixed;
+  inset: 0;
   margin: auto;
+  margin-bottom: 24px;
 
   & > button {
     border-radius: 20px;
