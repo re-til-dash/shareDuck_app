@@ -5,6 +5,7 @@ function Layout() {
   return (
     <StyledMain>
       <Sidebar />
+      <div style={{ width: "80px" }}></div>
       <Outlet />
     </StyledMain>
   );
