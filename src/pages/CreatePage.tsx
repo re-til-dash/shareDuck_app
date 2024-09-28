@@ -1,33 +1,62 @@
+import {
+  createPost,
+  TypeRequestPostCategory,
+  uploadImg,
+} from "../apis/posts/createPost";
 import TinyMCEExample from "@components/writePage/TinyMCEEditor";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { processAndUploadPost } from "@utils/img";
 import React from "react";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { Input } from "shareduck-ui";
 import styled from "styled-components";
 import { z } from "zod";
 
 const schema = z.object({
-  title: z.string(),
-  tag: z.array(z.string()),
-  value: z.string(),
+  title: z.string().min(1, "제목을 입력해주세요."),
+  hashtags: z.string().min(1, "태그를 입력해주세요."),
+  // value: z.string().min(1, "값을 입력해주세요."),
+  content: z.string().min(1, "내용을 입력해주세요."),
 });
+
+type FormData = z.infer<typeof schema>;
+
 const CreatePage: React.FC = () => {
   const {
-    register,
-    formState: { errors },
+    control,
     handleSubmit,
-  } = useForm<z.infer<typeof schema>>({
+    formState: { errors },
+    setValue,
+  } = useForm<FormData>({
     resolver: zodResolver(schema),
+    defaultValues: {
+      title: "",
+      hashtags: "",
+      // value: "",
+      content: "",
+    },
   });
 
   const onSubmit = handleSubmit(async (data) => {
+    const postId = 1;
+    const content = await processAndUploadPost(data.content, postId);
+
+    const request: TypeRequestPostCategory = {
+      categoryId: 1,
+      ...data,
+      hashtags: data.hashtags.split(", "),
+      content,
+    };
+
+    console.log("request: ", request);
+
+    // TODO: content가 string 형태로 바뀌어야 함
     // try {
-    //   await loginService.doLogin(data.email, data.password);
-    //   const accountModel = await accountService.getAccount();
-    //   setAccountName(accountModel.accountName);
-    //   navigate(`${import.meta.env.BASE_URL}tm`);
-    // } catch (e) {
-    //   console.error("Login or ship ID retrieval failed:", e);
+    //   const res = await createPost(request);
+
+    //   console.log(res);
+    // } catch (error) {
+    //   console.log(error);
     // }
   });
 
@@ -38,34 +67,69 @@ const CreatePage: React.FC = () => {
         <p>게시글 목록</p>
       </BackButton>
 
-      <Form
-        onSubmit={(e) => {
-          e.preventDefault();
-          onSubmit(e);
-        }}
-      >
+      <Form noValidate onSubmit={onSubmit}>
         <FormHeader>
           <FormItem>
             <label htmlFor="title">제목</label>
-            <Input id="title" placeholder="제목을 입력해주세요." />
+            <Controller
+              name="title"
+              control={control}
+              render={({ field }) => (
+                <Input
+                  id="title"
+                  placeholder="제목을 입력해주세요."
+                  {...field}
+                />
+              )}
+            />
+            {errors.title && (
+              <ErrorMessage>{errors.title.message}</ErrorMessage>
+            )}
           </FormItem>
           <FormItem>
-            <label htmlFor="tag">태그</label>
-            <Input id="tag" placeholder="태그를 입력해주세요." />
+            <label htmlFor="hashtags">태그</label>
+            <Controller
+              name="hashtags"
+              control={control}
+              render={({ field }) => (
+                <Input
+                  id="hashtags"
+                  placeholder="태그를 입력해주세요."
+                  {...field}
+                />
+              )}
+            />
+            {errors.hashtags && (
+              <ErrorMessage>{errors.hashtags.message}</ErrorMessage>
+            )}
           </FormItem>
-          <FormItem>
+          {/* <FormItem>
             <label htmlFor="value">값</label>
-            <Input id="value" placeholder="값을 입력해주세요." />
-          </FormItem>
+            <Controller
+              name="value"
+              control={control}
+              render={({ field }) => (
+                <Input id="value" placeholder="값을 입력해주세요." {...field} />
+              )}
+            />
+            {errors.value && (
+              <ErrorMessage>{errors.value.message}</ErrorMessage>
+            )}
+          </FormItem> */}
         </FormHeader>
 
-        {/* <EditorJSComp initialData={data} onChange={handleEditorChange} /> */}
-        <TinyMCEExample />
+        <Controller
+          name="content"
+          control={control}
+          render={({ field }) => (
+            <TinyMCEExample value={field.value} setValue={setValue} />
+          )}
+        />
+        {errors.content && (
+          <ErrorMessage>{errors.content.message}</ErrorMessage>
+        )}
 
-        {/* <Button onClick={handleClick}>
-          <Button.Icon src={"plus"} alt={"plus"} />
-          <Button.Text>New Category</Button.Text>
-        </Button> */}
+        <SubmitButton type="submit">저장</SubmitButton>
       </Form>
     </Wrapper>
   );
@@ -113,6 +177,9 @@ const Form = styled.form`
     border: 1px solid #efe9f1;
     background: #fff;
   }
+
+  & > .tox-edit-area {
+  }
 `;
 
 const FormHeader = styled.div`
@@ -127,22 +194,38 @@ const FormHeader = styled.div`
 
 const FormItem = styled.div`
   display: flex;
-  justify-content: start;
-  align-items: center;
-  padding: 6px 8px;
   width: 100%;
+  padding: 6px 8px;
+  align-items: center;
 
   & > label {
-    width: 38px;
     font-size: 14px;
     line-height: 140%;
+    margin-bottom: 4px;
+    width: 40px;
   }
 
   & > input {
     width: 100%;
   }
+`;
 
-  // & > :first-child {
-  //   flex-shrink: 0;
-  // }
+const ErrorMessage = styled.span`
+  color: red;
+  font-size: 12px;
+  margin-top: 4px;
+`;
+
+const SubmitButton = styled.button`
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+
+  &:hover {
+    background-color: #0056b3;
+  }
 `;
