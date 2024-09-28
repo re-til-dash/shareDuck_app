@@ -1,4 +1,4 @@
-import api from "../config/api.config";
+import api from "../../config/api.config";
 
 export interface TypeReqCategoryData {
   name: string;

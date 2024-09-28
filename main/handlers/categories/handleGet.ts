@@ -1,7 +1,7 @@
 import { safeStorage } from "electron";
 import fs from "fs";
 import path from "path";
-import getCategories from "../../api/getCategories.ts";
+import getCategories from "../../api/categories/getCategories.ts";
 import hasLocalFile from "../../utils/hasLocalFile.ts";
 import createLocalFile from "../../utils/createLocalFile.ts";
 import { userDataPath } from "../../utils/createFolder.ts";
