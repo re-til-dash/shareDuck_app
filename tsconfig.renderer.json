@@ -2,8 +2,8 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "./dist",
-    "target": "ES6",
-    "module": "ESNext",
+    "target": "es2020",
+    "module": "es2020",
     "jsx": "react-jsx",
     "moduleResolution": "bundler",
     "resolveJsonModule": true

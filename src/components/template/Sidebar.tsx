@@ -23,6 +23,7 @@ import {
 } from "shareduck-ui";
 import Categories from "@components/sidebar/Categories";
 import NewCategory from "@components/sidebar/NewCategory";
+import { useNavigate } from "react-router";
 
 export interface TypeSidebarContext {
   user: Partial<User>;
@@ -136,6 +137,8 @@ export default function Sidebar() {
     setShow(!show);
   };
 
+  const navigate = useNavigate();
+
   return (
     <SidebarContext.Provider
       value={{ user: userInfo, categories, setCategories }}
@@ -161,6 +164,16 @@ export default function Sidebar() {
           <Categories categories={categories} show={show} />
         </section>
         <NewCategory show={show} />
+        <Button
+          style={{ marginRight: 0 }}
+          type="button"
+          onClick={() => {
+            navigate("/writepage");
+          }}
+        >
+          <Button.Icon src={"plus"} alt={"plus"} />
+          {show && <Button.Text>Write Page</Button.Text>}
+        </Button>
         <StyledSettingsSection>
           <Button
             style={{ marginRight: 0 }}
