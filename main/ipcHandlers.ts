@@ -10,6 +10,6 @@ export default function registerIpcHandler(
 ) {
   ipcMain.handle(`${key}-${method}-ipc`, async (_e, ..._args) => {
     const handler = handlers[key]?.[method];
-    return await handler(...(_args as [any]));
+    return await handler(...(_args as [any, any]));
   });
 }

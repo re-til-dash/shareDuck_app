@@ -1,6 +1,6 @@
 import { UserId } from "./user";
 
-export interface typeCategory extends UserId {
+export interface TypeCategory extends UserId {
   id: number;
   name: string;
   properties: object;
