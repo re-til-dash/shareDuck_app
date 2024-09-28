@@ -2,7 +2,7 @@ import App from "../App";
 import { createHashRouter, RouteObject } from "react-router-dom";
 import Home from "@pages/Home";
 import Error from "./Error";
-import Categroy from "@pages/Category";
+import Category from "@pages/Category";
 import Post from "@pages/Post";
 import Overview from "@pages/Overview";
 import CreatePage from "@pages/CreatePage";
@@ -28,7 +28,7 @@ const routers: RouteObject[] = [
       { path: "/writepage", element: <CreatePage /> },
       {
         path: "/:menu",
-        element: <Categroy />,
+        element: <Category />,
         children: [
           {
             path: "/:menu/post",

@@ -1,10 +1,10 @@
 import { safeStorage } from "electron";
 import fs from "fs";
 import path from "path";
-import getCategories from "../../api/getCategories";
-import hasLocalFile from "../../utils/hasLocalFile";
-import createLocalFile from "../../utils/createLocalFile";
-import { userDataPath } from "../../utils/createFolder";
+import getCategories from "../../api/getCategories.ts";
+import hasLocalFile from "../../utils/hasLocalFile.ts";
+import createLocalFile from "../../utils/createLocalFile.ts";
+import { userDataPath } from "../../utils/createFolder.ts";
 
 const FILE_NAME = "categories.json";
 

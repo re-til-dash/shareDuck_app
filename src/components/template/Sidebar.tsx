@@ -1,8 +1,15 @@
-import { MouseEventHandler, useEffect, useState } from "react";
+import {
+  createContext,
+  Dispatch,
+  MouseEventHandler,
+  useEffect,
+  useReducer,
+  useState,
+} from "react";
 import { User, userData } from "@/types/user";
 
 import styled from "styled-components";
-import { typeCategory } from "@/types/category";
+import { TypeCategory } from "@/types/category";
 import {
   ArrowLeftIcon,
   ArrowRightIcon,
@@ -10,152 +17,194 @@ import {
   Details,
   HomeIcon,
   IconButton,
-  PlusIcon,
+  LogOutIcon,
   Profile,
   SettingIcon,
 } from "shareduck-ui";
+import Categories from "@components/sidebar/Categories";
+import NewCategory from "@components/sidebar/NewCategory";
 import { useNavigate } from "react-router";
 
+export interface TypeSidebarContext {
+  user: Partial<User>;
+  categories: TypeCategory[];
+  setCategories: Dispatch<TypeReducerParams> | null;
+}
+
+type TypeAction = "GET" | "CREATE" | "UPDATE" | "DELETE" | "";
+
+export interface TypeReducerParams {
+  action: TypeAction;
+  value?: Partial<TypeCategory>;
+  newValue?: [] | TypeCategory[];
+}
+
+function reducer(
+  state: TypeCategory[],
+  { action, value, newValue }: TypeReducerParams
+) {
+  if (action === "GET") {
+    return (state = newValue!);
+  }
+  if (!value?.id) return state;
+  const { id } = value;
+  const prevState = [...state];
+  const exceptsValueInPrevState = prevState.filter((prev) => prev.id != id);
+  const indexOfValue = prevState.findIndex((prev) => prev.id === id);
+  const prevCategoriesOfValue = prevState.splice(0, indexOfValue);
+  const nextCategoriesOfValue =
+    indexOfValue + 1 >= prevState.length
+      ? []
+      : prevState.splice(indexOfValue + 1, prevState.length);
+  switch (action) {
+    case "CREATE": {
+      window.shareDuck.invoke("categories-post-ipc", value);
+      state = [...prevState, value as TypeCategory];
+      break;
+    }
+    case "UPDATE": {
+      state = [
+        ...prevCategoriesOfValue,
+        value as TypeCategory,
+        ...nextCategoriesOfValue,
+      ];
+      window.shareDuck.invoke("categories-patch-ipc", value.id, {
+        name: value.name,
+        properties: value.properties,
+      });
+      break;
+    }
+    case "DELETE": {
+      state = [...exceptsValueInPrevState];
+      window.shareDuck.invoke("categories-delete-ipc", value);
+      break;
+    }
+    default: {
+    }
+  }
+  return state;
+}
+//init을 TS가 넣으라고 해서 넣는데, 딱히 사용은 안 할 듯?
+function init(arg: TypeCategory[]) {
+  return arg as never;
+}
+
+export const SidebarContext = createContext<TypeSidebarContext>({
+  user: { name: "shareDuck" },
+  categories: [],
+  setCategories: null,
+});
+
 export default function Sidebar() {
-  const DEFAULT_CATEGORIES = [
-    { id: "Overview", list: <Details.Text>Overview</Details.Text> },
-    { id: "Post", list: <Details.Text>Post</Details.Text> },
-  ];
   /**use router loader*/
+
   const [userInfo, _setUserInfo] = useState<Partial<User>>(userData);
-  const [categories, _setCategories] = useState<typeCategory[]>([
-    {
-      name: "TIL",
-      id: 12350,
-      properties: {},
-      userId: userInfo.userId as number,
-    },
-  ]);
+  const [categories, setCategories] = useReducer<
+    typeof reducer,
+    TypeCategory[]
+  >(
+    reducer,
+    [
+      {
+        name: "TIL",
+        id: 12350,
+        properties: {},
+        userId: userInfo.userId as number,
+      },
+    ],
+    init
+  );
 
-  // useEffect(() => {
-  //   window.shareDuck
-  //     .invoke("categories-get-ipc")
-  //     .then((res) => {
-  //       const data = res;
-  //       _setCategories(data.categories);
-  //       return res;
-  //     })
-  //     .catch((error) => console.log(error));
-  // }, []);
-
-  const navigate = useNavigate();
+  useEffect(() => {
+    window.shareDuck
+      .invoke("categories-get-ipc")
+      .then((res) => {
+        const data = res;
+        setCategories({ action: "GET", newValue: data.categories });
+        return res;
+      })
+      .catch((error) => console.log(error));
+  }, []);
 
   /**local state*/
-  const [selected, setSelected] = useState(0);
-  const [selectedCategories, setSelectedCategories] = useState(selected);
-  //처음에는 Home 카테고리이며, Home은 하위 메뉴가 없으므로 99로 초기화
 
+  //sidebar 펼치기/접기
   const [show, setShow] = useState(true);
 
-  /**event handler*/
-  const handleClickCaptureCategory: MouseEventHandler = (e) => {
-    const target = e.target as HTMLElement;
-    const menu = target.innerText.toLocaleLowerCase();
-    if (menu === "overview" || menu === "post") {
-      navigate(`/${selectedCategories}/${menu}`);
-    } else navigate(`/${menu}`);
-  };
-  const handleClickNew: MouseEventHandler = (e) => {
-    e.preventDefault();
-  };
   const handleClickSetting: MouseEventHandler = (_e) => {};
   const handleClickLogOut: MouseEventHandler = (_e) => {};
   const handleClickShow: MouseEventHandler = () => {
     setShow(!show);
   };
 
+  const navigate = useNavigate();
+
   return (
-    <StyledAside>
-      <Profile>
-        <Profile.Img src={userInfo.profile as string} alt={userInfo.nickname} />
-        {show && (
-          <Profile.Group>
-            <Profile.Name accountName={userInfo.nickname as string} />
-            <Profile.Id accountID={userInfo.name as string} />
-          </Profile.Group>
-        )}
-      </Profile>
-      <section
-        style={{ overflow: "auto", overflowX: "hidden" }}
-        onClickCapture={handleClickCaptureCategory}
-      >
-        <Details
-          open={selected === 0}
-          lists={[]}
-          id="home"
+    <SidebarContext.Provider
+      value={{ user: userInfo, categories, setCategories }}
+    >
+      <StyledAside>
+        <Profile>
+          <Profile.Img
+            src={userInfo.profile as string}
+            alt={userInfo.nickname}
+          />
+          {show && (
+            <Profile.Group>
+              <Profile.Name accountName={userInfo.nickname as string} />
+              <Profile.Id accountID={userInfo.name as string} />
+            </Profile.Group>
+          )}
+        </Profile>
+        <section style={{ overflow: "auto", overflowX: "hidden" }}>
+          <Details open lists={[]} id="home">
+            <Details.Icon src={HomeIcon} alt="home" />
+            {show && <Details.Text>Home</Details.Text>}
+          </Details>
+          <Categories categories={categories} show={show} />
+        </section>
+        <NewCategory show={show} />
+        <Button
+          style={{ marginRight: 0 }}
+          type="button"
           onClick={() => {
-            setSelected(0);
+            navigate("/writepage");
           }}
         >
-          <Details.Icon src={HomeIcon} alt="home" />
-          {show && <Details.Text>Home</Details.Text>}
-        </Details>
-        {categories.length > 0 &&
-          categories.map(({ id, name }) => (
-            <Details
-              key={id}
-              id={name.toLowerCase()}
-              open={selected === id}
-              lists={show ? DEFAULT_CATEGORIES : []}
-              onClickCapture={() => {
-                setSelected(id);
-                setSelectedCategories(id);
-              }}
-            >
-              <Details.Icon src={ArrowRightIcon} alt={name} />
-              {show && <Details.Text>{name}</Details.Text>}
-            </Details>
-          ))}
-      </section>
-      <Button style={{ marginRight: 0 }} type="button" onClick={handleClickNew}>
-        <Button.Icon src={PlusIcon} alt="add new category" />
-        {show && <Button.Text>New Category</Button.Text>}
-      </Button>
-      <Button
-        style={{ marginRight: 0 }}
-        type="button"
-        onClick={() => {
-          navigate("/writepage");
-        }}
-      >
-        <Button.Icon src={"plus"} alt={"plus"} />
-        {show && <Button.Text>Write Page</Button.Text>}
-      </Button>
-      <StyledSettingsSection>
-        <Button
-          style={{ marginRight: 0 }}
-          type="button"
-          onClick={handleClickSetting}
-        >
-          <Button.Icon src={SettingIcon} alt="setting" />
-          {show && <Button.Text>Settings</Button.Text>}
+          <Button.Icon src={"plus"} alt={"plus"} />
+          {show && <Button.Text>Write Page</Button.Text>}
         </Button>
-        <Button
-          style={{ marginRight: 0 }}
-          type="button"
-          onClick={handleClickLogOut}
-        >
-          {/* 임시 아이콘 */}
-          <Button.Icon src={PlusIcon} alt="log out" />
-          {show && <Button.Text>Log-out</Button.Text>}
-        </Button>
-      </StyledSettingsSection>
-      <StyledMoreFloatButton
-        onClick={handleClickShow}
-        src={show ? ArrowLeftIcon : ArrowRightIcon}
-        alt="open/close sidebar"
-      />
-    </StyledAside>
+        <StyledSettingsSection>
+          <Button
+            style={{ marginRight: 0 }}
+            type="button"
+            onClick={handleClickSetting}
+          >
+            <Button.Icon src={SettingIcon} alt="setting" />
+            {show && <Button.Text>Settings</Button.Text>}
+          </Button>
+          <Button
+            style={{ marginRight: 0 }}
+            type="button"
+            onClick={handleClickLogOut}
+          >
+            <Button.Icon src={LogOutIcon} alt="log out" />
+            {show && <Button.Text>Log-out</Button.Text>}
+          </Button>
+        </StyledSettingsSection>
+        <StyledMoreFloatButton
+          onClick={handleClickShow}
+          src={show ? ArrowLeftIcon : ArrowRightIcon}
+          alt="open/close sidebar"
+        />
+      </StyledAside>
+    </SidebarContext.Provider>
   );
 }
 
 const StyledAside = styled.aside`
-  position: relative;
+  position: fixed;
+  z-index: 999;
   display: flex;
   flex-direction: column;
   width: fit-content;
@@ -163,7 +212,6 @@ const StyledAside = styled.aside`
   padding: 24px 16px;
   border-radius: 0px 16px 16px 0px;
   background: #fff;
-  margin-top: 32px;
 
   /* ej_b50 */
   box-shadow: 0px 1px 50px 0px rgba(0, 0, 0, 0.1);
@@ -199,6 +247,6 @@ const StyledSettingsSection = styled.section`
   }
   & button > span {
     width: 100%;
-    color: var(--color-wb-700, #3a373a);
+    color: var(--wb-700, #3a373a);
   }
 `;

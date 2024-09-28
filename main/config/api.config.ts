@@ -6,7 +6,7 @@ const testToken = import.meta.env.VITE_TOKEN_KEY;
 
 const api = axios.create({
   headers: {
-    "Content-Type": "application/json  charset=utf-8",
+    "Content-Type": "application/json;  charset=utf-8",
     Authorization: `Baerer ${testToken}`,
   },
 });
