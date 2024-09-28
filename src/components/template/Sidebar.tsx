@@ -160,7 +160,7 @@ export default function Sidebar() {
           </Details>
           <Categories categories={categories} show={show} />
         </section>
-        <NewCategory show />
+        <NewCategory show={show} />
         <StyledSettingsSection>
           <Button
             style={{ marginRight: 0 }}
@@ -190,7 +190,8 @@ export default function Sidebar() {
 }
 
 const StyledAside = styled.aside`
-  position: relative;
+  position: fixed;
+  z-index: 999;
   display: flex;
   flex-direction: column;
   width: fit-content;
@@ -198,7 +199,6 @@ const StyledAside = styled.aside`
   padding: 24px 16px;
   border-radius: 0px 16px 16px 0px;
   background: #fff;
-  margin-top: 32px;
 
   /* ej_b50 */
   box-shadow: 0px 1px 50px 0px rgba(0, 0, 0, 0.1);
