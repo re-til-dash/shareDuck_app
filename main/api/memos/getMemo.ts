@@ -1,5 +1,13 @@
 import api from "../../config/api.config";
 
 export default async function getMemo() {
-  return await api.get("/memos");
+  try {
+    const result = await api.get("/memos");
+
+    return result.data;
+  } catch (error) {
+    console.log("get memo", error);
+  }
+
+  return null;
 }
