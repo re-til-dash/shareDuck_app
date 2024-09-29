@@ -18,14 +18,13 @@ function DialogTitlebar({ os, setCloseDialog }: TypeDialogTitlebarProps) {
       <TitlebarIcons os={os}>
         <TitlebarIcons.Close
           style={{ margin: "8px", marginLeft: "auto", marginRight: "16px" }}
-          onClick={(e) => setCloseDialog(false)}
+          onClick={(_e) => setCloseDialog(false)}
         />
       </TitlebarIcons>
       <hr />
     </>
   );
 }
-Dialog.Titlebar = DialogTitlebar;
 
 export default function Dialog({
   open = false,

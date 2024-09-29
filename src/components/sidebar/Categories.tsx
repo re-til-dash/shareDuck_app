@@ -22,11 +22,11 @@ export default function Categories({ show }: TypeCategoriesProps) {
   ];
   const navigate = useNavigate();
   const [selected, setSelected] = useState(0);
-  //카테고로 설정 보기/숨기기
+  //카테고리 설정 보기/숨기기
+  const [isShowSetting, setIsShowSetting] = useState(0);
   const [ref, setRef] = useState<HTMLImageElement | null>(null);
   const settingIconRef = useRef(ref);
   const deleteIconRef = useRef(ref);
-  const [isShowSetting, setIsShowSetting] = useState(0);
   const [currentCetgory, setCurrentCategory] = useState<TypeCategory | null>(
     null
   );

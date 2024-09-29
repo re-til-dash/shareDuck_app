@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 import hasLocalFile from "../../utils/hasLocalFile.ts";
 import createLocalFile from "../../utils/createLocalFile.ts";
-import { userDataPath } from "../../utils/createFolder.ts";
+import createFolderSync, { userDataPath } from "../../utils/createFolder.ts";
 import postCategories from "../../api/categories/postCategories.ts";
 
 const FILE_NAME = "categories.json";
@@ -36,6 +36,7 @@ export default async function handlePostCategories(_e, data) {
 
   // 4. 로컬에 파일이 없으므로 새로 생성
   const content = JSON.stringify(result);
+  createFolderSync("categories");
   createLocalFile("categories", FILE_NAME, content);
 
   return result;
