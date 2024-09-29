@@ -1,4 +1,4 @@
-import api from "../config/api.config";
+import api from "../../config/api.config";
 import { TypeReqCategoryData, TypeResCategoryData } from "./postCategories";
 
 export default async function patchCategories(
