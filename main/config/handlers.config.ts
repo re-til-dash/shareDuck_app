@@ -11,7 +11,7 @@ import handleDeletePostById from "../handlers/posts/handleDeleteId.ts";
 import handleGetAllPosts from "../handlers/posts/handleGetAll.ts";
 import handleGetPostById from "../handlers/posts/handleGetId.ts";
 import handlePatchPostById from "../handlers/posts/handlePatchId.ts";
-import handlePostNewPost from "../handlers/posts/handlePost.ts";
+import handleCreatePost from "../handlers/posts/handleCreatePost.ts";
 import handlePostImgOfPost from "../handlers/posts/handlePostImg.ts";
 import handleDeleteUser from "../handlers/users/handleDelete.ts";
 import handleGetUser from "../handlers/users/handleGet.ts";
@@ -54,7 +54,7 @@ const handlers = {
   },
   posts: {
     get: handleGetAllPosts,
-    post: handlePostNewPost,
+    post: handleCreatePost,
     patch: () => {},
     delete: () => {},
   },
