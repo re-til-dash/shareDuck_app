@@ -1,7 +1,9 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 
 import axios from "axios";
-const baseURL = import.meta.env.VITE_BASEAPI_KEY;
+
+//! VITE_BASEAPI_KEY => VITE_BASE_KEY
+const baseURL = import.meta.env.VITE_BASE_KEY;
 const testToken = import.meta.env.VITE_TOKEN_KEY;
 
 const api = axios.create({
