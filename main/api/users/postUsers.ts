@@ -1,4 +1,4 @@
-import api from "../config/api.config.ts";
+import api from "../../config/api.config.ts";
 
 interface typeNewUser {
   email: string;
@@ -9,5 +9,5 @@ interface typeNewUser {
 
 export default async function postUsers(data: typeNewUser) {
   const config = {};
-  return api.post("/api/v1/users", data, config);
+  return api.post("/v1/users", data, config);
 }
