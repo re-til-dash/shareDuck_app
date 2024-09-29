@@ -18,14 +18,17 @@ export default function Header() {
     window.shareDuck.send("title-bar-action", "CLOSE");
   };
   return (
-    <StyledHeader onDoubleClick={(e) => e.preventDefault()}>
-      <StyledDrag onDoubleClick={(e) => e.preventDefault()}></StyledDrag>
-      <TitlebarIcons os="WIN">
-        <TitlebarIcons.Down onClick={handleClickDown} />
-        <TitlebarIcons.Size onClick={handleClickSize} />
-        <TitlebarIcons.Close onClick={handleClickClose} />
-      </TitlebarIcons>
-    </StyledHeader>
+    <>
+      <StyledHeader onDoubleClick={(e) => e.preventDefault()}>
+        <StyledDrag onDoubleClick={(e) => e.preventDefault()}></StyledDrag>
+        <TitlebarIcons os="WIN">
+          <TitlebarIcons.Down onClick={handleClickDown} />
+          <TitlebarIcons.Size onClick={handleClickSize} />
+          <TitlebarIcons.Close onClick={handleClickClose} />
+        </TitlebarIcons>
+      </StyledHeader>
+      <div style={{ height: "32px", width: "100vw" }}></div>
+    </>
   );
 }
 
