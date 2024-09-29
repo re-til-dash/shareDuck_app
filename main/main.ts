@@ -1,11 +1,12 @@
 //메인 프로세스 진입점 파일
 
-import { app, ipcMain, screen } from "electron";
+import { app, ipcMain } from "electron";
 
 import createWindow from "./windows/windows.ts";
 import registerIpcHandler, { typeMethod } from "./ipcHandlers.ts";
 import handlers, { typeHandlers } from "./config/handlers.config.ts";
 import { WINDOW_DEFAULT_SIZE } from "./config/window.config.ts";
+import createMemoWindow from "./windows/memo.ts";
 const methdos: typeMethod[] = ["get", "post", "patch", "delete"];
 function initializeApp() {
   const keys = Object.keys(handlers) as typeHandlers[];
@@ -34,8 +35,6 @@ function initializeApp() {
       }
       case "CLOSE": {
         mainWindow.close();
-        //!!개발모드에서만 다음코드 사용
-        app.quit();
         break;
       }
       default:
@@ -47,8 +46,31 @@ function initializeApp() {
   });
 
   app.setName("shareDuck");
+
+  ipcMain.on("memo-ipc", (_e, message: string) => {
+    switch (message) {
+      case "open": {
+        createMemoWindow();
+        break;
+      }
+      case "close": {
+        break;
+      }
+      case "insert": {
+        break;
+      }
+      default: {
+        console.error("잘못된 메모 요청");
+      }
+    }
+  });
 }
 
 app.on("ready", initializeApp);
+app.on("window-all-closed", () => {
+  if (process.platform !== "darwin") {
+    app.quit();
+  }
+});
 
 export default app;
