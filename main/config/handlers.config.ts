@@ -1,5 +1,3 @@
-import getUsers from "../api/users/getUser.ts";
-import postUsers from "../api/users/postUsers.ts";
 import handlePostLogin from "../handlers/auth/handlePost.ts";
 import handleGetCategories from "../handlers/categories/handleGet.ts";
 import handlePatchCategories from "../handlers/categories/handlePatch.ts";
@@ -7,11 +5,11 @@ import handlePostCategories from "../handlers/categories/handlePost.js";
 import handleDeleteMemoById from "../handlers/memos/handleDelete.ts";
 import handleGetMemo from "../handlers/memos/handleGet.ts";
 import handlePostMemo from "../handlers/memos/handlePost.ts";
+import handleCreatePost from "../handlers/posts/handleCreatePost.ts";
 import handleDeletePostById from "../handlers/posts/handleDeleteId.ts";
 import handleGetAllPosts from "../handlers/posts/handleGetAll.ts";
 import handleGetPostById from "../handlers/posts/handleGetId.ts";
 import handlePatchPostById from "../handlers/posts/handlePatchId.ts";
-import handlePostNewPost from "../handlers/posts/handlePost.ts";
 import handlePostImgOfPost from "../handlers/posts/handlePostImg.ts";
 import handleDeleteUser from "../handlers/users/handleDelete.ts";
 import handleGetUser from "../handlers/users/handleGet.ts";
@@ -54,7 +52,7 @@ const handlers = {
   },
   posts: {
     get: handleGetAllPosts,
-    post: handlePostNewPost,
+    post: handleCreatePost,
     patch: () => {},
     delete: () => {},
   },

@@ -16,14 +16,8 @@ export type TypeRequestPostCategory = {
   thumbnailPath?: string;
 };
 
-export async function createPost(data: TypeRequestPostCategory) {
-  try {
-    const result = await api.post(`/posts`, data); // 예: 카테고리 데이터 가져오기
-    return result.data;
-  } catch (error) {
-    return error;
-  }
-}
+// INFO: main/api로 옮김, deprecated
+
 export async function uploadImg(file: File, postId: number) {
   const formData = new FormData();
   formData.append("file", file);
