@@ -1,16 +1,12 @@
-import {
-  createPost,
-  TypeRequestPostCategory,
-  uploadImg,
-} from "../apis/posts/createPost";
 import TinyMCEExample from "@components/writePage/TinyMCEEditor";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { processAndUploadPost } from "@utils/img";
 import React from "react";
-import { useForm, Controller } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { Input } from "shareduck-ui";
 import styled from "styled-components";
 import { z } from "zod";
+import { TypeRequestPostCategory } from "../apis/posts/createPost";
 
 const schema = z.object({
   title: z.string().min(1, "제목을 입력해주세요."),
@@ -48,9 +44,20 @@ const CreatePage: React.FC = () => {
       content,
     };
 
-    console.log("request: ", request);
+    // TODO: 추가로 에러처리나 필요한게 있으면 추가하자.
 
-    // TODO: content가 string 형태로 바뀌어야 함
+    /**
+     * TODO:
+     * 오프라인 상태에서 임시저장할 떄는, json 에 이미지를 url로 변환하지 않고 저장하는 로직을 수행하도록 해야함
+     * processAndUploadPost 안해야함
+     */
+    try {
+      const response = await window.shareDuck.invoke("posts-post-ipc", request);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+
     // try {
     //   const res = await createPost(request);
 
