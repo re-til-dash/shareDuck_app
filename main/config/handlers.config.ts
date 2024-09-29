@@ -1,5 +1,3 @@
-import getUsers from "../api/users/getUser.ts";
-import postUsers from "../api/users/postUsers.ts";
 import handlePostLogin from "../handlers/auth/handlePost.ts";
 import handleGetCategories from "../handlers/categories/handleGet.ts";
 import handlePatchCategories from "../handlers/categories/handlePatch.ts";
