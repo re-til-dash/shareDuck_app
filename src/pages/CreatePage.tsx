@@ -1,4 +1,3 @@
-import TinyMCEExample from "@components/writePage/TinyMCEEditor";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { processAndUploadPost } from "@utils/img";
 import React from "react";
@@ -7,6 +6,7 @@ import { Input } from "shareduck-ui";
 import styled from "styled-components";
 import { z } from "zod";
 import { TypeRequestPostCategory } from "../apis/posts/createPost";
+import { ToastUIEditor } from "@components/writePage/ToastUIEditor";
 
 const schema = z.object({
   title: z.string().min(1, "제목을 입력해주세요."),
@@ -45,6 +45,8 @@ const CreatePage: React.FC = () => {
     };
 
     // TODO: 추가로 에러처리나 필요한게 있으면 추가하자.
+
+    console.log(request);
 
     /**
      * TODO:
@@ -128,9 +130,7 @@ const CreatePage: React.FC = () => {
         <Controller
           name="content"
           control={control}
-          render={({ field }) => (
-            <TinyMCEExample value={field.value} setValue={setValue} />
-          )}
+          render={() => <ToastUIEditor setValue={setValue} />}
         />
         {errors.content && (
           <ErrorMessage>{errors.content.message}</ErrorMessage>
