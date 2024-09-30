@@ -174,6 +174,16 @@ export default function Sidebar() {
           <Button.Icon src={"plus"} alt={"plus"} />
           {show && <Button.Text>Write Page</Button.Text>}
         </Button>
+        <Button
+          style={{ marginRight: 0 }}
+          type="button"
+          onClick={() => {
+            navigate(`/${12}/detailpage`);
+          }}
+        >
+          <Button.Icon src={"plus"} alt={"plus"} />
+          {show && <Button.Text>Detail Page</Button.Text>}
+        </Button>
         <StyledSettingsSection>
           <Button
             style={{ marginRight: 0 }}
