@@ -1,11 +1,20 @@
 {
   "$schema": "https://raw.githubusercontent.com/electron-userland/electron-builder/master/packages/app-builder-lib/scheme.json",
-  "appId": "YourAppID",
+  "appId": "appId",
   "asar": true,
-  "productName": "YourAppName",
+  "productName": "sahreDuck",
   "directories": {
     "output": "release/${version}"
   },
+  "extraResources": [
+    {
+      "from": "./public/SUIT-Variable-ttf/SUIT-Variable.ttf",
+      "to": "resources/korean-fonts",
+      "filter": [
+        "**/*"
+      ]
+    }
+  ],
   "files": [
     "dist",
     "dist-electron"

@@ -1,11 +1,20 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useParams } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import styled from "styled-components";
 import { IconButton, PlusIcon } from "shareduck-ui";
 import { MouseEventHandler } from "react";
 function Layout() {
+  const { menu } = useParams();
+  console.log(menu);
+
   const handleClickMemoOpen: MouseEventHandler = (_e) => {
-    window.shareDuck.send("memo-ipc", "open");
+    //! CategoryId가 없는 경우 일단 home으로 넣음. 이에 대한 예외처리 필요
+    window.shareDuck.send("memo-ipc", "open", {
+      categoryId: menu ?? "home",
+      keyword: "",
+      page: 0,
+      size: 1,
+    });
   };
   return (
     <StyledMain>

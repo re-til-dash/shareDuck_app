@@ -120,7 +120,7 @@ export default function Sidebar() {
       .invoke("categories-get-ipc")
       .then((res) => {
         const data = res;
-        setCategories({ action: "GET", newValue: data.categories });
+        setCategories({ action: "GET", newValue: data });
         return res;
       })
       .catch((error) => console.log(error));

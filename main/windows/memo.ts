@@ -41,5 +41,6 @@ export default function createMemoWindow() {
     memoWindow.loadFile(path.join(RENDERER_DIST, "memo.html"));
     memoWindow.setMenu(null);
   }
+
   return memoWindow;
 }
