@@ -7,6 +7,8 @@ import registerIpcHandler, { typeMethod } from "./ipcHandlers.ts";
 import handlers, { typeHandlers } from "./config/handlers.config.ts";
 import { WINDOW_DEFAULT_SIZE } from "./config/window.config.ts";
 import createMemoWindow from "./windows/memo.ts";
+import handleGetMemo from "./handlers/memos/handleGet.ts";
+import handlePostMemo from "./handlers/memos/handlePost.ts";
 const methdos: typeMethod[] = ["get", "post", "patch", "delete"];
 function initializeApp() {
   const keys = Object.keys(handlers) as typeHandlers[];
@@ -47,16 +49,24 @@ function initializeApp() {
 
   app.setName("shareDuck");
 
-  ipcMain.on("memo-ipc", (_e, message: string) => {
+  ipcMain.on("memo-ipc", async (_e, message: string, payload: any) => {
     switch (message) {
       case "open": {
         createMemoWindow();
+
+        break;
+      }
+      case "ready": {
+        const result = await handleGetMemo(payload);
+        _e.reply("memo-reply-ipc", result);
         break;
       }
       case "close": {
         break;
       }
-      case "insert": {
+      case "create": {
+        const result = await handlePostMemo(payload);
+        _e.reply("memo-reply-ipc", result);
         break;
       }
       default: {
