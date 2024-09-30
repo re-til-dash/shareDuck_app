@@ -1,10 +1,17 @@
-import { FormEventHandler, useEffect, useRef, useState } from "react";
+import {
+  FormEventHandler,
+  MouseEventHandler,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import {
   Button,
   Icon,
   IconButton,
   Input,
   List,
+  LogOutIcon,
   PlusIcon,
   SearchIcon,
   Tag,
@@ -37,6 +44,7 @@ export default function Memo() {
   /**local events */
   const [query, setQuery] = useState("");
   const [memo, setMemo] = useState("");
+  const [show, setShow] = useState(-1);
 
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
@@ -63,6 +71,21 @@ export default function Memo() {
 
     setMemo((_prev) => "");
   };
+
+  const handleMouseOverMemo =
+    (id: number): MouseEventHandler =>
+    () => {
+      setShow(id);
+    };
+
+  const handleClickDeleteMemo =
+    (id: number): MouseEventHandler =>
+    () => {
+      window.shareDuck.send("memo-ipc", "delete", id);
+      window.shareDuck.on("memo-reply-ipc", (_e, payload) => {
+        setMemoList(payload);
+      });
+    };
   return (
     <>
       <StyledHeader onDoubleClick={(e) => e.preventDefault()}>
@@ -97,7 +120,12 @@ export default function Memo() {
             const theDate = new Date(+time);
             const dateString = theDate.toLocaleTimeString();
             return (
-              <List key={list.id} style={{ display: "block" }}>
+              <List
+                key={list.id}
+                style={{ display: "block" }}
+                onMouseOver={handleMouseOverMemo(list.id)}
+                onMouseLeave={() => setShow(-1)}
+              >
                 {prevDate && prevDate.split("/")[0] != date && (
                   <StyledDate>
                     <Tag.Basic>{date}</Tag.Basic>
@@ -108,6 +136,14 @@ export default function Memo() {
                   <span>{dateString}</span>
                 </StyledMemoInfo>
                 <p>{list.content}</p>
+                {show === list.id && (
+                  <IconButton
+                    style={{ marginLeft: "auto" }}
+                    src={LogOutIcon}
+                    alt="delete memo"
+                    onClick={handleClickDeleteMemo(list.id)}
+                  />
+                )}
               </List>
             );
           })}
@@ -188,7 +224,7 @@ const StyledLabel = styled.label`
   & > input {
     border: none;
     height: 100%;
-    /* width: 100%; */
+    width: 100%;
   }
 `;
 

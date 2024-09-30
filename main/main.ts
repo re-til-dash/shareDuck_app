@@ -9,6 +9,7 @@ import { WINDOW_DEFAULT_SIZE } from "./config/window.config.ts";
 import createMemoWindow from "./windows/memo.ts";
 import handleGetMemo from "./handlers/memos/handleGet.ts";
 import handlePostMemo from "./handlers/memos/handlePost.ts";
+import handleDeleteMemoById from "./handlers/memos/handleDelete.ts";
 const methdos: typeMethod[] = ["get", "post", "patch", "delete"];
 function initializeApp() {
   const keys = Object.keys(handlers) as typeHandlers[];
@@ -66,6 +67,11 @@ function initializeApp() {
       }
       case "create": {
         const result = await handlePostMemo(payload);
+        _e.reply("memo-reply-ipc", result);
+        break;
+      }
+      case "delete": {
+        const result = await handleDeleteMemoById(payload);
         _e.reply("memo-reply-ipc", result);
         break;
       }
