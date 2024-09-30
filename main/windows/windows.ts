@@ -34,8 +34,8 @@ export default function createWindow() {
     icon: path.join(process.env.VITE_PUBLIC as string, "shareoluck-logo.svg"),
     webPreferences: {
       preload: path.join(__dirname, "preload.mjs"),
-      contextIsolation: true,
       nodeIntegration: false,
+      spellcheck: false, // IME와 맞춤법 검사 기능 충돌 방지
     },
   });
 
@@ -46,7 +46,6 @@ export default function createWindow() {
       new Date().toLocaleString()
     );
   });
-
   if (VITE_DEV_SERVER_URL) {
     mainWindow.loadURL(VITE_DEV_SERVER_URL);
     mainWindow.webContents.openDevTools();
