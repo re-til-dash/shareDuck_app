@@ -66,7 +66,7 @@ export default function Categories({ show }: TypeCategoriesProps) {
           <Details
             style={{ position: "relative" }}
             key={id}
-            id={name.toLowerCase()}
+            id={id + ""}
             open={selected === id}
             lists={show ? DEFAULT_CATEGORIES : []}
             onClick={() => {
