@@ -23,7 +23,7 @@ function Layout() {
   return (
     <StyledMain>
       <Sidebar />
-      <div style={{ width: "212.7px" }}></div>
+      <div style={{ minWidth: "212.7px" }}></div>
       <Outlet />
       {/* 임시 아이콘 */}
       <IconButton.Primary
