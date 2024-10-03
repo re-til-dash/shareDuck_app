@@ -4,6 +4,7 @@ import {
   MouseEventHandler,
   useEffect,
   useReducer,
+  useRef,
   useState,
 } from "react";
 import { User, userData } from "@/types/user";
@@ -24,6 +25,7 @@ import {
 import Categories from "@components/sidebar/Categories";
 import NewCategory from "@components/sidebar/NewCategory";
 import { useNavigate } from "react-router";
+import LogoutCheckDialog from "@components/dialog/LogoutCheckDialog";
 
 export interface TypeSidebarContext {
   user: Partial<User>;
@@ -107,12 +109,17 @@ export default function Sidebar() {
       .then((res) => setCategories({ action: "GET", value: res }));
   }, []);
   /**local state*/
-
+  const [ref, setRef] = useState<HTMLElement | null>(null);
+  const [logout, setLogout] = useState(false);
   //sidebar 펼치기/접기
   const [show, setShow] = useState(true);
 
+  const logoutRef = useRef(ref);
   const handleClickSetting: MouseEventHandler = (_e) => {};
-  const handleClickLogOut: MouseEventHandler = (_e) => {};
+  const handleClickLogOut: MouseEventHandler = (_e) => {
+    setRef(_e.target as HTMLElement);
+    setLogout((_prev) => !_prev);
+  };
   const handleClickShow: MouseEventHandler = () => {
     setShow(!show);
   };
@@ -192,6 +199,7 @@ export default function Sidebar() {
             <Button.Icon src={LogOutIcon} alt="log out" />
             {show && <Button.Text>Log-out</Button.Text>}
           </Button>
+          {logout && <LogoutCheckDialog openTrigger={logoutRef.current!} />}
         </StyledSettingsSection>
         <StyledMoreFloatButton
           onClick={handleClickShow}
