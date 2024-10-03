@@ -45,15 +45,14 @@ function reducer(state: TypeCategory[], { action, value }: TypeReducerParams) {
 
   const { id } = value!;
 
+  const prevState = state;
   switch (action) {
     case "CREATE": {
-      window.shareDuck
-        .invoke("categories-post-ipc", value)
-        .then((res) => (state = [...res]));
+      state = [...prevState, value as TypeCategory];
+      window.shareDuck.invoke("categories-post-ipc", value);
       break;
     }
     case "UPDATE": {
-      const prevState = state;
       const indexOfValue = prevState.findIndex((prev) => prev.id === id);
       const prevCategoriesOfValue = prevState.splice(0, indexOfValue);
       const nextCategoriesOfValue =
@@ -72,7 +71,6 @@ function reducer(state: TypeCategory[], { action, value }: TypeReducerParams) {
       break;
     }
     case "DELETE": {
-      const prevState = state;
       const exceptsValueInPrevState = prevState.filter((prev) => prev.id != id);
       state = [...exceptsValueInPrevState];
       window.shareDuck.invoke("categories-delete-ipc", value!.id);
@@ -146,7 +144,7 @@ export default function Sidebar() {
             <Details.Icon src={HomeIcon} alt="home" />
             {show && <Details.Text>Home</Details.Text>}
           </Details>
-          <Categories categories={categories} show={show} />
+          <Categories show={show} />
         </section>
         <NewCategory show={show} />
         <Button

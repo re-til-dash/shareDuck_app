@@ -54,9 +54,11 @@ export default function CategoryNewDialog({
 
       setNewCategory((prev) => ({ ...prev, properties: dict }));
     }
-
+    console.log(1);
     if (setCategories && newCategory.name)
       setCategories({ action: "CREATE", value: newCategory });
+
+    setOpenDialog(false);
   };
   return (
     <Dialog open={openDialog} setOpenDialog={setOpenDialog}>
@@ -87,7 +89,7 @@ export default function CategoryNewDialog({
               onClick={() => {
                 setOpenDialog(false);
               }}
-              type="button"
+              type="reset"
             >
               취소하기
             </Button>

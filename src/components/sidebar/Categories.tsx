@@ -10,7 +10,6 @@ type TypeHandler = (id: number) => MouseEventHandler;
 
 export interface TypeCategoriesProps {
   show: boolean;
-  categories: TypeCategory[];
 }
 
 export default function Categories({ show }: TypeCategoriesProps) {
@@ -18,7 +17,10 @@ export default function Categories({ show }: TypeCategoriesProps) {
 
   const DEFAULT_CATEGORIES = [
     { id: "Overview", list: <Details.Text>Overview</Details.Text> },
-    { id: "Post", list: <Details.Text>Post</Details.Text> },
+    {
+      id: "Post",
+      list: <Details.Text>Post</Details.Text>,
+    },
   ];
   const navigate = useNavigate();
   const [selected, setSelected] = useState(0);
@@ -59,6 +61,8 @@ export default function Categories({ show }: TypeCategoriesProps) {
       e.stopPropagation();
       setCurrentCategory((_prev) => ({ id, name, properties, userId }));
     };
+
+  console.log(categories);
   return (
     <section onClickCapture={handleClickCaptureCategory}>
       {categories.length > 0 &&
@@ -104,23 +108,23 @@ export default function Categories({ show }: TypeCategoriesProps) {
               </StyledIconList>
             )}
 
-            {currentCetgory?.id && (
-              <CategorySettingDialog
-                categoryId={currentCetgory.id}
-                name={currentCetgory.name}
-                properties={
-                  currentCetgory.properties as { [key: string]: string }
-                }
-                openTrigger={settingIconRef.current as HTMLElement}
-                setCategories={setCategories}
-              />
-            )}
-            {currentCetgory?.id && (
-              <CategoryDeleteDialog
-                category={currentCetgory}
-                openTrigger={deleteIconRef.current as HTMLElement}
-                setCategories={setCategories}
-              />
+            {currentCetgory && (
+              <>
+                <CategorySettingDialog
+                  categoryId={currentCetgory!.id}
+                  name={currentCetgory!.name}
+                  properties={
+                    currentCetgory!.properties as { [key: string]: string }
+                  }
+                  openTrigger={settingIconRef.current as HTMLElement}
+                  setCategories={setCategories}
+                />
+                <CategoryDeleteDialog
+                  category={currentCetgory!}
+                  openTrigger={deleteIconRef.current as HTMLElement}
+                  setCategories={setCategories}
+                />
+              </>
             )}
           </Details>
         ))}
