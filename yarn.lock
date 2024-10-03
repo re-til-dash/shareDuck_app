@@ -1561,7 +1561,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/glob@npm:^7.1.0":
+"@types/glob@npm:^7.1.0, @types/glob@npm:^7.1.1":
   version: 7.2.0
   resolution: "@types/glob@npm:7.2.0"
   dependencies:
@@ -2130,6 +2130,24 @@ __metadata:
   version: 2.1.0
   resolution: "array-union@npm:2.1.0"
   checksum: 10c0/429897e68110374f39b771ec47a7161fc6a8fc33e196857c0a396dc75df0b5f65e4d046674db764330b6bb66b39ef48dd7c53b6a2ee75cfb0681e0c1a7033962
+  languageName: node
+  linkType: hard
+
+"asar@npm:^3.2.0":
+  version: 3.2.0
+  resolution: "asar@npm:3.2.0"
+  dependencies:
+    "@types/glob": "npm:^7.1.1"
+    chromium-pickle-js: "npm:^0.2.0"
+    commander: "npm:^5.0.0"
+    glob: "npm:^7.1.6"
+    minimatch: "npm:^3.0.4"
+  dependenciesMeta:
+    "@types/glob":
+      optional: true
+  bin:
+    asar: bin/asar.js
+  checksum: 10c0/1eea9686e3df8102251b911951d374c4bb758ce2881471c94c3999f7c473c96be6036ac09aafbd9453ba43b901e96ad0082d7e1bafc12f6768571353297c516f
   languageName: node
   linkType: hard
 
@@ -5713,6 +5731,7 @@ __metadata:
     "@typescript-eslint/eslint-plugin": "npm:^7.1.1"
     "@typescript-eslint/parser": "npm:^7.1.1"
     "@vitejs/plugin-react": "npm:^4.2.1"
+    asar: "npm:^3.2.0"
     axios: "npm:^1.7.7"
     electron: "npm:^32.1.2"
     electron-builder: "npm:^24.13.3"
