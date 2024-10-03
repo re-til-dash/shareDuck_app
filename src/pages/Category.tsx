@@ -5,10 +5,10 @@ export default function Category() {
   //한글이 깨질 때는 디코딩하여 사용.
   // const decodedMenu = menu ? decodeURIComponent(menu) : "";
   const { menu } = useParams();
-  const navigate = useNavigate();
-  useEffect(() => {
-    navigate(`/${menu}/overview`);
-  }, [menu]);
+  // const navigate = useNavigate();
+  // useEffect(() => {
+  //   navigate(`/${menu}/overview`);
+  // }, [menu]);
 
   return (
     <>
