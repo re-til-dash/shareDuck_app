@@ -139,6 +139,9 @@ export default function Sidebar() {
 
   const navigate = useNavigate();
 
+  // deprecated: post list 페이지가 나오면 삭제될것
+  const [postId, setPostId] = useState("");
+
   return (
     <SidebarContext.Provider
       value={{ user: userInfo, categories, setCategories }}
@@ -175,14 +178,22 @@ export default function Sidebar() {
           {show && <Button.Text>Write Page</Button.Text>}
         </Button>
         <Button
-          style={{ marginRight: 0 }}
+          style={{ marginRight: 0, display: "flex", flexDirection: "column" }}
           type="button"
-          onClick={() => {
-            navigate(`/${12}/detailpage`);
-          }}
         >
           <Button.Icon src={"plus"} alt={"plus"} />
           {show && <Button.Text>Detail Page</Button.Text>}
+          <input
+            type="text"
+            value={postId}
+            onChange={(e) => setPostId(e.target.value)}
+            placeholder="Enter: postId ex) 19"
+            onKeyDown={(e) => {
+              if (e.code === "Enter") {
+                navigate(`/${postId}/detailpage`);
+              }
+            }}
+          />
         </Button>
         <StyledSettingsSection>
           <Button
