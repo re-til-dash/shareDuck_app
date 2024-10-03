@@ -33,7 +33,6 @@ export default function Login() {
   const [showWarn, setShowWarn] = useState(false);
 
   const handleSubmitLogin = handleSubmit(async (data) => {
-    console.log(data);
     const result = await window.shareDuck.invoke("auth-post-ipc", data);
     setShowWarn(!result);
   });
@@ -41,7 +40,9 @@ export default function Login() {
   const handleCheckAutoLogin: ChangeEventHandler = (_e) => {};
   return (
     <Auth submitHandler={handleSubmitLogin}>
-      <h1>로그인</h1>
+      <hgroup>
+        <h1>로그인</h1>
+      </hgroup>
       <Controller
         name="email"
         control={control}

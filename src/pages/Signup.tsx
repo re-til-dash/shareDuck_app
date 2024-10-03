@@ -1,18 +1,38 @@
-import Auth from "@components/template/Auth";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { isValid, z } from "zod";
 import { Link } from "react-router-dom";
-import { Button, CryingEmoji, Input, LogOutIcon, Toast } from "shareduck-ui";
+import Auth from "@components/template/Auth";
+import {
+  Button,
+  CheckBox,
+  CryingEmoji,
+  Input,
+  LogOutIcon,
+  Toast,
+} from "shareduck-ui";
 import styled from "styled-components";
-import { z } from "zod";
 
-const initValue = { email: "", password: "", name: "", passwordCheck: "" };
+// FormValues 타입 정의
+interface FormValues {
+  name: string;
+  email: string;
+  password: string;
+  passwordCheck: string;
+}
 
-// 비밀번호 정규식: 8자 이상, 알파벳(대소문자 상관없음), 숫자, 특수 문자 포함
+interface CheckValues {
+  privacy: boolean;
+  service: boolean;
+  marketing: boolean;
+}
+
+// 비밀번호 정규식: 알파벳, 숫자, 특수문자 포함, 8자 이상
 const passwordRegex =
   /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_\-+=~`[\]{}|\\:;"'<>,.?/]).{8,}$/;
 
+// Zod 유효성 검사 스키마 정의
 const schema = z
   .object({
     name: z.string().min(1, "이름을 입력해주세요"),
@@ -28,55 +48,70 @@ const schema = z
   })
   .refine((data) => data.password === data.passwordCheck, {
     message: "비밀번호가 일치하지 않습니다",
-    path: ["passwordCheck"], // passwordCheck 필드에 에러 메시지 표시
+    path: ["passwordCheck"],
   });
 
+// 체크박스 라벨 배열
+const checkboxLabels = [
+  "개인정보 이용 약관 동의",
+  "서비스 이용 약관 동의",
+  "마케팅 활용 약관 동의",
+];
+
+const checkValue = {
+  privacy: false,
+  service: false,
+  marketing: false,
+};
+
+// 컴포넌트 정의
 export default function Signup() {
   const {
     control,
     handleSubmit,
-    formState: { errors },
-  } = useForm<typeof initValue>({
+    formState: { errors, isValid },
+  } = useForm<FormValues>({
     resolver: zodResolver(schema),
-    defaultValues: initValue,
-    mode: "onChange", // 실시간으로 입력값 변경 시 유효성 검사
-    reValidateMode: "onChange", // 입력이 변경될 때마다 재검증 수행
+    defaultValues: { name: "", email: "", password: "", passwordCheck: "" },
+    mode: "onChange",
+    reValidateMode: "onChange",
   });
-  // 에러 메시지를 관리하는 배열
-  const errorMessages = [
-    {
-      field: "name",
-      message: errors.name?.message || "이름을 정확히 입력해주세요",
-    },
-    {
-      field: "email",
-      message: errors.email?.message || "사용할 수 없는 이메일입니다",
-    },
-    {
-      field: "password",
-      message: errors.password?.message || "사용할 수 없는 비밀번호입니다",
-    },
-    {
-      field: "passwordCheck",
-      message: errors.passwordCheck?.message || "비밀번호가 일치하지 않습니다",
-    },
-  ];
-  const [showWarn, setShowWarn] = useState(false);
 
-  const handleSubmitSignup = handleSubmit(async (data) => {
-    console.log(data);
+  const {
+    control: checkControl,
+    formState: { isValid: isCheckValid },
+  } = useForm<CheckValues>({
+    defaultValues: checkValue,
+    mode: "onChange",
+  });
+
+  const [showWarn, setShowWarn] = useState(false);
+  const agreements = checkboxLabels.map(() => false);
+
+  const [isAllagreed, setIsAllagreed] = useState(
+    agreements.every((agree) => agree)
+  );
+  useEffect(() => {
+    setIsAllagreed(isCheckValid && isValid);
+  }, [isValid]);
+  // 폼 제출 핸들러
+  const onSubmit = async (data: FormValues) => {
     const result = await window.shareDuck.invoke("user-post-ipc", data);
     setShowWarn(!result);
-  });
+  };
+
   return (
-    <Auth submitHandler={handleSubmitSignup}>
-      <h1>회원가입</h1>
-      {/* 각 필드를 Controller로 관리 */}
-      {["name", "email", "password", "passwordCheck"].map((field, idx) => (
-        <>
+    <Auth submitHandler={handleSubmit(onSubmit)}>
+      <hgroup>
+        <h1>회원가입</h1>
+        <StyledP>로그인을 위해 이메일과 비밀번호를 입력해주세요!</StyledP>
+      </hgroup>
+
+      {/* 각 필드를 배열을 이용해 간결하게 정의 */}
+      {["name", "email", "password", "passwordCheck"].map((field) => (
+        <div key={field}>
           <Controller
-            key={field}
-            name={field as keyof typeof initValue}
+            name={field as keyof FormValues}
             control={control}
             render={({ field }) => (
               <label>
@@ -88,34 +123,59 @@ export default function Signup() {
               </label>
             )}
           />
-          {errors[field as keyof typeof initValue] && (
-            <label>
-              <Toast key={field} variants="error">
-                <Toast.Emoji src={CryingEmoji} />
-                <Toast.Text content={errorMessages[idx].message} />
-              </Toast>
-            </label>
+          {/* 필드별 에러 메시지 표시 */}
+          {errors[field as keyof FormValues] && (
+            <Toast variants="error">
+              <Toast.Emoji src={CryingEmoji} />
+              <Toast.Text
+                content={
+                  errors[field as keyof FormValues]?.message ??
+                  "잠시 후 다시 시도해주세요"
+                }
+              />
+            </Toast>
           )}
-        </>
+        </div>
       ))}
 
+      {/* 서버 에러 메시지 표시 */}
       {showWarn && (
-        <label>
-          <Toast variants="error">
-            <Toast.Emoji src={CryingEmoji} />
-            <Toast.Text content="사용할 수 없는 이메일입니다" />
-          </Toast>
-        </label>
+        <Toast variants="error">
+          <Toast.Emoji src={CryingEmoji} />
+          <Toast.Text content="이미 존재하는 계정입니다" />
+        </Toast>
       )}
 
-      <Button type="submit">
+      {/* 개별 약관 동의 체크박스 */}
+      {Object.keys(checkValue).map((label) => (
+        <Controller
+          name={label as keyof CheckValues}
+          control={checkControl}
+          render={({ field }) => (
+            <CheckBox
+              label={label}
+              {...field}
+              // onChange={field.onChange}
+              value={field.value + ""}
+              checked={field.value}
+            />
+          )}
+        />
+      ))}
+
+      {/* 제출 버튼 */}
+      <Button type="submit" disabled={!isAllagreed}>
         <Button.Text>회원가입</Button.Text>
       </Button>
+
+      {/* 로그인 바로가기 버튼 */}
       <StyledLink to={"/login"}>
         <Button>
           <Button.Text>로그인 바로가기</Button.Text>
         </Button>
       </StyledLink>
+
+      {/* 기타 로그인 방식 */}
       <div>
         <hr />
         <span>or continue with</span>
@@ -142,6 +202,7 @@ export default function Signup() {
   );
 }
 
+// 스타일 정의
 const StyledLink = styled(Link)`
   display: block;
   text-decoration: none;
@@ -157,4 +218,16 @@ const StyledLink = styled(Link)`
       margin: auto;
     }
   }
+`;
+
+const StyledP = styled.p`
+  margin-top: 4px;
+  color: var(--wb-900, #141314);
+  text-align: center;
+  font-family: SUIT;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: -0.084px;
 `;

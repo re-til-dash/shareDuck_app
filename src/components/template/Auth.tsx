@@ -1,6 +1,5 @@
 import { FormEventHandler, ReactNode } from "react";
 import styled from "styled-components";
-import { z } from "zod";
 
 export interface TypeAuthProps {
   children: ReactNode;
@@ -26,7 +25,7 @@ const StyledForm = styled.form`
   display: flex;
   flex-direction: column;
   width: 100%;
-  & > h1 {
+  & > hgroup {
     text-align: center;
     margin: 36px;
   }
@@ -40,7 +39,7 @@ const StyledForm = styled.form`
   }
 
   & > label {
-    margin-bottom: 24px;
+    margin-bottom: 20px;
   }
   & > button {
     margin-bottom: 8px;
@@ -69,7 +68,7 @@ const StyledForm = styled.form`
     }
   }
 
-  & p {
+  & > span {
     margin-top: 24px;
 
     color: var(--wb-500);
