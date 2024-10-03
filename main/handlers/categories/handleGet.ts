@@ -10,7 +10,6 @@ const FILE_NAME = "categories.json";
 
 export default async function handleGetCategories() {
   const filePath = path.join(userDataPath, FOLDER_NAME, FILE_NAME);
-
   // 1. 파일이 존재하는지 확인
   if (hasLocalFile(FOLDER_NAME, FILE_NAME)) {
     try {
@@ -28,9 +27,7 @@ export default async function handleGetCategories() {
   let result = await getCategories();
   // 4. API 결과가 없으면 기본 데이터 사용
   if (!result) {
-    result = {
-      categories: [],
-    };
+    result = [];
   }
 
   // 5. 로컬에 파일이 없으므로 새로 생성

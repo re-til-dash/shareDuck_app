@@ -1,28 +1,24 @@
 import fs from "fs";
 import path from "path";
-import hasLocalFile from "../../utils/hasLocalFile.ts";
-import createLocalFile from "../../utils/createLocalFile.ts";
-import createFolderSync, { userDataPath } from "../../utils/createFolder.ts";
+import { userDataPath } from "../../utils/createFolder.ts";
 
-const FOLDER_NAME = "categories";
-const FILE_NAME = "categories.json";
+const FOLDER_NAME = "memos";
+const FILE_NAME = "memos.json";
 
-export default function handleDeleteMemoById(targetMemo) {
+export default function handleDeleteMemoById(id) {
   const filePath = path.join(userDataPath, FOLDER_NAME, FILE_NAME);
 
   try {
     const localMemos = fs.readFileSync(filePath, "utf8");
     const currentMemos = JSON.parse(localMemos);
 
-    const exceptsMemos = currentMemos.content.filter(
-      (memo) => memo.id === targetMemo.id
-    );
+    const exceptsMemos = currentMemos.content.filter((memo) => memo.id != id);
 
     fs.writeFileSync(filePath, JSON.stringify({ content: exceptsMemos }));
 
-    return exceptsMemos.content;
+    return exceptsMemos;
   } catch (error) {
-    console.log("create memo", error);
+    console.log("delete memo", error);
 
     return error;
   }

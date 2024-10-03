@@ -1,16 +1,8 @@
 import api from "../../config/api.config";
 
-export default async function getMemo(
-  categoryId: number,
-  keyword: string,
-  page: number,
-  size = 1,
-  sort = ""
-) {
+export default async function getMemo(params) {
   try {
-    const result = await api.get(
-      `/memos?categoryId=${categoryId}&keyword=${keyword}&page=${page}&size=${size}&sort=${[sort]}`
-    );
+    const result = await api.get(`/memos`, { params });
 
     return result.data;
   } catch (error) {
