@@ -18,13 +18,14 @@ import handleGetUserById from "../handlers/users/handleGetId.ts";
 import handlePatchUser from "../handlers/users/handlePatch.ts";
 import handlePatchPassword from "../handlers/users/handlePatchPw.ts";
 import handlePostUser from "../handlers/users/handlePost.ts";
+import handleDeleteCategoryById from "../handlers/categories/handleDelete.ts";
 
 const handlers = {
   categories: {
     get: handleGetCategories,
     post: handlePostCategories,
     patch: handlePatchCategories,
-    delete: () => {},
+    delete: handleDeleteCategoryById,
   },
   auth: {
     get: () => {},

@@ -1,6 +1,6 @@
 //memo render process 관련 처리 내용
 
-import { BrowserWindow } from "electron";
+import { app, BrowserWindow } from "electron";
 import path from "node:path";
 import {
   RENDERER_DIST,
@@ -18,7 +18,6 @@ export default function createMemoWindow() {
     width: 380,
     height: 560,
     resizable: false,
-    icon: path.join(process.env.VITE_PUBLIC as string, "shareoluck-logo.svg"),
     webPreferences: {
       preload: path.join(__dirname, "preload.mjs"),
       contextIsolation: true,
@@ -32,7 +31,7 @@ export default function createMemoWindow() {
       new Date().toLocaleString()
     );
   });
-  if (VITE_MEMO_SERVER_URL) {
+  if (process.env.NODE_ENV === "development" && VITE_MEMO_SERVER_URL) {
     memoWindow.loadURL(VITE_MEMO_SERVER_URL);
     memoWindow.webContents.openDevTools();
   } else {

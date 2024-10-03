@@ -31,7 +31,7 @@ export default async function handleGetMemo({
     }
   }
   // 3. 파일이 없거나 읽기 오류 발생 시 API 호출
-  let result = await getMemo(categoryId, keyword, page, size);
+  let result = await getMemo({ categoryId, keyword, page, size });
   // 4. API 결과가 없으면 기본 데이터 사용
   if (typeof result === "string" || !result) {
     result = {

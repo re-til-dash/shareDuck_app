@@ -1,10 +1,17 @@
-import { FormEventHandler, useEffect, useRef, useState } from "react";
+import {
+  FormEventHandler,
+  MouseEventHandler,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import {
   Button,
   Icon,
   IconButton,
   Input,
   List,
+  LogOutIcon,
   PlusIcon,
   SearchIcon,
   Tag,
@@ -22,21 +29,29 @@ export default function Memo() {
   const [memoList, setMemoList] = useState<
     { id: number; category: string; content: string; date: string }[]
   >([]);
+
+  const [currentCategory, setCurrentCategory] = useState({
+    id: 0,
+    category: "home",
+  });
+
   useEffect(() => {
     window.shareDuck.send("memo-ipc", "ready", {
-      categoryId: 0,
+      categoryId: currentCategory.id,
       keyword: "",
       page: 0,
       size: 1,
     });
+
     window.shareDuck.on("memo-reply-ipc", (_e, payload) => {
-      setMemoList(payload);
+      setMemoList((_prev) => payload);
     });
   }, []);
 
   /**local events */
   const [query, setQuery] = useState("");
   const [memo, setMemo] = useState("");
+  const [show, setShow] = useState(-1);
 
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
@@ -47,6 +62,10 @@ export default function Memo() {
 
   const handleSubmitMemo: FormEventHandler = (e) => {
     e.preventDefault();
+    window.shareDuck.on("route-reply-ipc", (_e, payload) => {
+      console.log("in reply");
+      setCurrentCategory((_prev) => payload);
+    });
     const currentDate = new Date();
     const year = currentDate.getFullYear();
     const month = currentDate.getMonth() + 1;
@@ -55,13 +74,32 @@ export default function Memo() {
     const newMemo = {
       id: 0,
       content: memo,
-      categoryId: 0,
-      category: "test",
+      categoryId: currentCategory.id,
+      category: currentCategory.category,
       date: `${year}년 ${month}월 ${day}일 / ${time}`,
     };
     window.shareDuck.send("memo-ipc", "create", newMemo);
 
     setMemo((_prev) => "");
+  };
+
+  const handleMouseOverMemo =
+    (id: number): MouseEventHandler =>
+    () => {
+      setShow(id);
+    };
+
+  const handleClickDeleteMemo =
+    (id: number): MouseEventHandler =>
+    () => {
+      window.shareDuck.send("memo-ipc", "delete", id);
+      window.shareDuck.on("memo-reply-ipc", (_e, payload) => {
+        setMemoList(payload);
+      });
+    };
+
+  const handleClickClose = () => {
+    window.shareDuck.send("title-bar-action", "CLOSE", "memoWindow");
   };
   return (
     <>
@@ -72,7 +110,7 @@ export default function Memo() {
           </StyledDrag>
 
           <TitlebarIcons os="WIN">
-            <TitlebarIcons.Close />
+            <TitlebarIcons.Close onClick={handleClickClose} />
           </TitlebarIcons>
         </StyleGroup>
         <StyledSearchbar>
@@ -91,14 +129,19 @@ export default function Memo() {
       <main style={{ height: "calc(100vh - 120px)" }}>
         <StyledUlist>
           {memoList.map((list, index) => {
-            const prevDate = index - 1 >= 0 && memoList[index - 1].date;
+            const prevDate = index - 1 >= 0 ? memoList[index - 1].date : "'";
             const date = list.date.split("/")[0];
             const time = list.date.split("/")[1];
             const theDate = new Date(+time);
             const dateString = theDate.toLocaleTimeString();
             return (
-              <List key={list.id} style={{ display: "block" }}>
-                {prevDate && prevDate.split("/")[0] != date && (
+              <List
+                key={list.id}
+                style={{ display: "block" }}
+                onMouseOver={handleMouseOverMemo(list.id)}
+                onMouseLeave={() => setShow(-1)}
+              >
+                {prevDate.split("/")[0] != date && (
                   <StyledDate>
                     <Tag.Basic>{date}</Tag.Basic>
                   </StyledDate>
@@ -108,6 +151,14 @@ export default function Memo() {
                   <span>{dateString}</span>
                 </StyledMemoInfo>
                 <p>{list.content}</p>
+                {show === list.id && (
+                  <IconButton
+                    style={{ marginLeft: "auto" }}
+                    src={LogOutIcon}
+                    alt="delete memo"
+                    onClick={handleClickDeleteMemo(list.id)}
+                  />
+                )}
               </List>
             );
           })}
@@ -188,7 +239,7 @@ const StyledLabel = styled.label`
   & > input {
     border: none;
     height: 100%;
-    /* width: 100%; */
+    width: 100%;
   }
 `;
 

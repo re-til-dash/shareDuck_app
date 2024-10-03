@@ -1,4 +1,9 @@
-import { DialogHTMLAttributes, Dispatch, useState } from "react";
+import {
+  DialogHTMLAttributes,
+  Dispatch,
+  FormEventHandler,
+  useState,
+} from "react";
 import { Button, Input } from "shareduck-ui";
 import Dialog from "./Dialog";
 import { TypeReducerParams } from "@components/template/Sidebar";
@@ -25,7 +30,8 @@ export default function CategoryNewDialog({
     properties: {},
   });
 
-  const handleSubmitNew = () => {
+  const handleSubmitNew: FormEventHandler = (e) => {
+    e.preventDefault();
     //todo: 백엔드에 req 형식 변경 요청하기
     /** as-is : {
       "name": "string",
@@ -49,7 +55,7 @@ export default function CategoryNewDialog({
       setNewCategory((prev) => ({ ...prev, properties: dict }));
     }
 
-    if (setCategories && newCategory)
+    if (setCategories && newCategory.name)
       setCategories({ action: "CREATE", value: newCategory });
   };
   return (
@@ -81,6 +87,7 @@ export default function CategoryNewDialog({
               onClick={() => {
                 setOpenDialog(false);
               }}
+              type="button"
             >
               취소하기
             </Button>
