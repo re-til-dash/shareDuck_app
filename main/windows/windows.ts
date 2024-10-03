@@ -1,10 +1,15 @@
+// home render process 관련 처리 내용
+
 import { BrowserWindow } from "electron";
-import { fileURLToPath } from "node:url";
 import path from "node:path";
-import { WINDOW_DEFAULT_SIZE } from "../config/window.config";
+import {
+  RENDERER_DIST,
+  VITE_DEV_SERVER_URL,
+  WINDOW_DEFAULT_SIZE,
+  __dirname,
+} from "../config/window.config";
 
 // const require = createRequire(import.meta.url)
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // The built directory structure
 //
@@ -15,18 +20,11 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 // │ │ ├── main.js
 // │ │ └── preload.mjs
 // │
-process.env.APP_ROOT = path.join(__dirname, "..");
 //창 관리 (BrowserWindow 인스턴스 생성, 관리)
 // 🚧 Use ['ENV_NAME'] avoid vite:define plugin - Vite@2.x
-export const VITE_DEV_SERVER_URL = process.env["VITE_DEV_SERVER_URL"];
-export const MAIN_DIST = path.join(process.env.APP_ROOT, "dist-electron");
-export const RENDERER_DIST = path.join(process.env.APP_ROOT, "dist");
-
-process.env.VITE_PUBLIC = VITE_DEV_SERVER_URL
-  ? path.join(process.env.APP_ROOT, "public")
-  : RENDERER_DIST;
 
 let mainWindow: BrowserWindow | null;
+
 export default function createWindow() {
   mainWindow = new BrowserWindow({
     frame: false,
@@ -36,8 +34,8 @@ export default function createWindow() {
     icon: path.join(process.env.VITE_PUBLIC as string, "shareoluck-logo.svg"),
     webPreferences: {
       preload: path.join(__dirname, "preload.mjs"),
-      contextIsolation: true,
       nodeIntegration: false,
+      spellcheck: false, // IME와 맞춤법 검사 기능 충돌 방지
     },
   });
 
@@ -48,7 +46,6 @@ export default function createWindow() {
       new Date().toLocaleString()
     );
   });
-
   if (VITE_DEV_SERVER_URL) {
     mainWindow.loadURL(VITE_DEV_SERVER_URL);
     mainWindow.webContents.openDevTools();

@@ -2,9 +2,10 @@ import fs from "fs";
 import path from "path";
 import hasLocalFile from "../../utils/hasLocalFile.ts";
 import createLocalFile from "../../utils/createLocalFile.ts";
-import { userDataPath } from "../../utils/createFolder.ts";
+import createFolderSync, { userDataPath } from "../../utils/createFolder.ts";
 import patchCategories from "../../api/categories/patchCatagories.ts";
 
+const FOLDER_NAME = "categories";
 const FILE_NAME = "categories.json";
 
 export default async function handlePatchCategories(categoryId, newData) {
@@ -16,9 +17,9 @@ export default async function handlePatchCategories(categoryId, newData) {
     return result;
   }
 
-  const filePath = path.join(userDataPath, FILE_NAME);
+  const filePath = path.join(userDataPath, FOLDER_NAME, FILE_NAME);
   // 2. 파일이 존재하는지 확인
-  if (hasLocalFile(userDataPath, FILE_NAME)) {
+  if (hasLocalFile(FOLDER_NAME, FILE_NAME)) {
     try {
       // 3. 파일이 있으면 파일에서 기존 데이터 불러오기
       const fileContent = fs.readFileSync(filePath, "utf8");
@@ -41,7 +42,8 @@ export default async function handlePatchCategories(categoryId, newData) {
 
   // 4. 로컬에 파일이 없으므로 새로 생성
   const content = JSON.stringify(result);
-  createLocalFile("categories", FILE_NAME, content);
+  createFolderSync(FOLDER_NAME);
+  createLocalFile(FOLDER_NAME, FILE_NAME, content);
 
   return result;
 }

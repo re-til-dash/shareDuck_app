@@ -23,6 +23,32 @@ export default defineConfig({
       renderer: {},
     }),
   ],
+  build: {
+    assetsDir: "assets", // Vite 빌드 시 파일이 저장될 디렉터리
+    sourcemap: true, // 소스맵 생성 (디버깅에 유용)
+    chunkSizeWarningLimit: 1000, // 경고를 무시하기 위해 청크 크기 한도 1000kb로 상향
+    rollupOptions: {
+      output: {
+        assetFileNames: `assets/[name].[ext]`, // 폰트 파일을 포함한 모든 파일을 assets 폴더로 이동
+        manualChunks(id) {
+          if (id.includes("node_modules")) {
+            // node_modules 폴더를 기준으로 청크 분할
+            return id
+              .toString()
+              .split("node_modules/")[1]
+              .split("/")[0]
+              .toString();
+          }
+        },
+      },
+    },
+    terserOptions: {
+      compress: {
+        drop_console: true, // 콘솔 로그 제거
+        drop_debugger: true, // 디버거 제거
+      },
+    },
+  },
   resolve: {
     alias: [
       {

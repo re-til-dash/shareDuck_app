@@ -1,11 +1,14 @@
 //메인 프로세스 진입점 파일
 
-import { app, ipcMain, screen } from "electron";
+import { app, ipcMain } from "electron";
 
 import createWindow from "./windows/windows.ts";
 import registerIpcHandler, { typeMethod } from "./ipcHandlers.ts";
 import handlers, { typeHandlers } from "./config/handlers.config.ts";
 import { WINDOW_DEFAULT_SIZE } from "./config/window.config.ts";
+import createMemoWindow from "./windows/memo.ts";
+import handleGetMemo from "./handlers/memos/handleGet.ts";
+import handlePostMemo from "./handlers/memos/handlePost.ts";
 const methdos: typeMethod[] = ["get", "post", "patch", "delete"];
 function initializeApp() {
   const keys = Object.keys(handlers) as typeHandlers[];
@@ -34,8 +37,6 @@ function initializeApp() {
       }
       case "CLOSE": {
         mainWindow.close();
-        //!!개발모드에서만 다음코드 사용
-        app.quit();
         break;
       }
       default:
@@ -47,8 +48,39 @@ function initializeApp() {
   });
 
   app.setName("shareDuck");
+
+  ipcMain.on("memo-ipc", async (_e, message: string, payload: any) => {
+    switch (message) {
+      case "open": {
+        createMemoWindow();
+
+        break;
+      }
+      case "ready": {
+        const result = await handleGetMemo(payload);
+        _e.reply("memo-reply-ipc", result);
+        break;
+      }
+      case "close": {
+        break;
+      }
+      case "create": {
+        const result = await handlePostMemo(payload);
+        _e.reply("memo-reply-ipc", result);
+        break;
+      }
+      default: {
+        console.error("잘못된 메모 요청");
+      }
+    }
+  });
 }
 
 app.on("ready", initializeApp);
+app.on("window-all-closed", () => {
+  if (process.platform !== "darwin") {
+    app.quit();
+  }
+});
 
 export default app;
