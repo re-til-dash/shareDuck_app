@@ -6,6 +6,7 @@ import Category from "@pages/Category";
 import Post from "@pages/Post";
 import Overview from "@pages/Overview";
 import CreatePage from "@pages/CreatePage";
+import { DetailPage } from "@pages/DetailPage";
 
 //todo: 서버에서 가져온 정보로 동적 라우터 생성하기
 //todo: private 라우터 설정하기
@@ -26,6 +27,7 @@ const routers: RouteObject[] = [
       },
       { path: "/home", element: <Home /> },
       { path: "/writepage", element: <CreatePage /> },
+      { path: "/:postId/detailpage", element: <DetailPage /> },
       {
         path: "/:menu",
         element: <Category />,
