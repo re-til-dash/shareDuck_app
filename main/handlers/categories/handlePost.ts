@@ -8,28 +8,25 @@ import postCategories from "../../api/categories/postCategories.ts";
 const FOLDER_NAME = "categories";
 const FILE_NAME = "categories.json";
 
-export default async function handlePostCategories(_e, data) {
+export default async function handlePostCategories(data) {
+  const filePath = path.join(userDataPath, FOLDER_NAME, FILE_NAME);
   // 1. API 호출
   let result = await postCategories(data);
-
-  //에러 메세지로 들어오는 경우 바로 메세지 반환
+  //에러 메세지로 들어오는 경우
   if (typeof result === "string") {
-    return result;
+    throw Error(result);
   }
 
-  const filePath = path.join(userDataPath, FOLDER_NAME, FILE_NAME);
-
-  // 2. 파일이 존재하는지 확인
   if (hasLocalFile(FOLDER_NAME, FILE_NAME)) {
+    // 2. 파일이 존재하는지 확인
     try {
       // 3. 파일이 있으면 파일에서 기존 데이터 불러오기
       const fileContent = fs.readFileSync(filePath, "utf8");
-      const data = JSON.parse(fileContent);
-      //!카테고리의 순서를 옮겨야 한다면 여기를 고쳐야함!
-      data.categories.push(result);
+      const prevData = JSON.parse(fileContent);
+      prevData.push(result);
       // 기존 데이터에 새로운 데이터 추가하기
-      fs.writeFileSync(filePath, JSON.stringify(data));
-      return result;
+      fs.writeFileSync(filePath, JSON.stringify(prevData));
+      return prevData;
     } catch (err) {
       console.error("Error reading local file:", err);
       // 파일을 읽는 중 오류가 발생하면 이후 로직

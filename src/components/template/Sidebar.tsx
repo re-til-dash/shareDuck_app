@@ -36,47 +36,44 @@ type TypeAction = "GET" | "CREATE" | "UPDATE" | "DELETE" | "";
 export interface TypeReducerParams {
   action: TypeAction;
   value?: Partial<TypeCategory>;
-  newValue?: [] | TypeCategory[];
 }
 
-function reducer(
-  state: TypeCategory[],
-  { action, value, newValue }: TypeReducerParams
-) {
+function reducer(state: TypeCategory[], { action, value }: TypeReducerParams) {
   if (action === "GET") {
-    return (state = newValue!);
+    return value;
   }
-  if (!value?.id) return state;
-  const { id } = value;
-  const prevState = [...state];
-  const exceptsValueInPrevState = prevState.filter((prev) => prev.id != id);
-  const indexOfValue = prevState.findIndex((prev) => prev.id === id);
-  const prevCategoriesOfValue = prevState.splice(0, indexOfValue);
-  const nextCategoriesOfValue =
-    indexOfValue + 1 >= prevState.length
-      ? []
-      : prevState.splice(indexOfValue + 1, prevState.length);
+
+  const { id } = value!;
+
+  const prevState = state;
   switch (action) {
     case "CREATE": {
-      window.shareDuck.invoke("categories-post-ipc", value);
       state = [...prevState, value as TypeCategory];
+      window.shareDuck.invoke("categories-post-ipc", value);
       break;
     }
     case "UPDATE": {
+      const indexOfValue = prevState.findIndex((prev) => prev.id === id);
+      const prevCategoriesOfValue = prevState.splice(0, indexOfValue);
+      const nextCategoriesOfValue =
+        indexOfValue + 1 >= prevState.length
+          ? []
+          : prevState.splice(indexOfValue + 1, prevState.length);
       state = [
         ...prevCategoriesOfValue,
         value as TypeCategory,
         ...nextCategoriesOfValue,
       ];
-      window.shareDuck.invoke("categories-patch-ipc", value.id, {
-        name: value.name,
-        properties: value.properties,
+      window.shareDuck.invoke("categories-patch-ipc", value!.id, {
+        name: value!.name,
+        properties: value!.properties,
       });
       break;
     }
     case "DELETE": {
+      const exceptsValueInPrevState = prevState.filter((prev) => prev.id != id);
       state = [...exceptsValueInPrevState];
-      window.shareDuck.invoke("categories-delete-ipc", value);
+      window.shareDuck.invoke("categories-delete-ipc", value!.id);
       break;
     }
     default: {
@@ -102,30 +99,13 @@ export default function Sidebar() {
   const [categories, setCategories] = useReducer<
     typeof reducer,
     TypeCategory[]
-  >(
-    reducer,
-    [
-      {
-        name: "TIL",
-        id: 12350,
-        properties: {},
-        userId: userInfo.userId as number,
-      },
-    ],
-    init
-  );
+  >(reducer, [], init);
 
   useEffect(() => {
     window.shareDuck
       .invoke("categories-get-ipc")
-      .then((res) => {
-        const data = res;
-        setCategories({ action: "GET", newValue: data });
-        return res;
-      })
-      .catch((error) => console.log(error));
+      .then((res) => setCategories({ action: "GET", value: res }));
   }, []);
-
   /**local state*/
 
   //sidebar 펼치기/접기
@@ -138,6 +118,9 @@ export default function Sidebar() {
   };
 
   const navigate = useNavigate();
+
+  // deprecated: post list 페이지가 나오면 삭제될것
+  const [postId, setPostId] = useState("");
 
   return (
     <SidebarContext.Provider
@@ -161,7 +144,7 @@ export default function Sidebar() {
             <Details.Icon src={HomeIcon} alt="home" />
             {show && <Details.Text>Home</Details.Text>}
           </Details>
-          <Categories categories={categories} show={show} />
+          <Categories show={show} />
         </section>
         <NewCategory show={show} />
         <Button
@@ -191,6 +174,24 @@ export default function Sidebar() {
           }}
         >
           <Button.Text>Sign In</Button.Text>
+        </Button>
+        <Button
+          style={{ marginRight: 0, display: "flex", flexDirection: "column" }}
+          type="button"
+        >
+          <Button.Icon src={"plus"} alt={"plus"} />
+          {show && <Button.Text>Detail Page</Button.Text>}
+          <input
+            type="text"
+            value={postId}
+            onChange={(e) => setPostId(e.target.value)}
+            placeholder="Enter: postId ex) 19"
+            onKeyDown={(e) => {
+              if (e.code === "Enter") {
+                navigate(`/${postId}/detailpage`);
+              }
+            }}
+          />
         </Button>
         <StyledSettingsSection>
           <Button

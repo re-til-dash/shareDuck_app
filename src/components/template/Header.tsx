@@ -4,11 +4,10 @@ import styled from "styled-components";
 
 export default function Header() {
   const [size, setSize] = useState(true); //min
-  useEffect(() => {
+
+  const handleClickSize: MouseEventHandler = (_e) => {
     if (size) window.shareDuck.send("title-bar-action", "MAX");
     else window.shareDuck.send("title-bar-action", "MAX");
-  }, [size]);
-  const handleClickSize: MouseEventHandler = (_e) => {
     setSize(!size);
   };
   const handleClickDown: MouseEventHandler = (_e) => {

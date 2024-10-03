@@ -29,6 +29,7 @@ export default function CategoryDeleteDialog({
   useEffect(() => {}, []);
   const handleClickDelete: MouseEventHandler = (_e) => {
     if (setCategories) setCategories({ action: "DELETE", value: category });
+    setOpenDialog(false);
   };
   return (
     <Dialog

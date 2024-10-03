@@ -1,6 +1,6 @@
 // home render process 관련 처리 내용
 
-import { BrowserWindow } from "electron";
+import { app, BrowserWindow } from "electron";
 import path from "node:path";
 import {
   RENDERER_DIST,
@@ -31,7 +31,6 @@ export default function createWindow() {
     maximizable: false,
 
     ...WINDOW_DEFAULT_SIZE,
-    icon: path.join(process.env.VITE_PUBLIC as string, "shareoluck-logo.svg"),
     webPreferences: {
       preload: path.join(__dirname, "preload.mjs"),
       nodeIntegration: false,
@@ -46,7 +45,7 @@ export default function createWindow() {
       new Date().toLocaleString()
     );
   });
-  if (VITE_DEV_SERVER_URL) {
+  if (process.env.NODE_ENV === "development" && VITE_DEV_SERVER_URL) {
     mainWindow.loadURL(VITE_DEV_SERVER_URL);
     mainWindow.webContents.openDevTools();
   } else {
