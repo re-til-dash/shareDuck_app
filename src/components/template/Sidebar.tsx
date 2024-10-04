@@ -158,6 +158,24 @@ export default function Sidebar() {
           {show && <Button.Text>Write Page</Button.Text>}
         </Button>
         <Button
+          style={{ marginRight: 0 }}
+          type="button"
+          onClick={() => {
+            navigate("/signUp");
+          }}
+        >
+          {<Button.Text>Sign Up</Button.Text>}
+        </Button>
+        <Button
+          style={{ marginRight: 0 }}
+          type="button"
+          onClick={() => {
+            navigate("/signIn");
+          }}
+        >
+          <Button.Text>Sign In</Button.Text>
+        </Button>
+        <Button
           style={{ marginRight: 0, display: "flex", flexDirection: "column" }}
           type="button"
         >
