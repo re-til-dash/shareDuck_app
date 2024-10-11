@@ -1,6 +1,6 @@
 import path from "path";
 import fs from "fs";
-import { userDataPath } from "../../utils/createFolder";
+import { userDataPath } from "../../config/window.config";
 const FOLDER_NAME = "memos";
 const FILE_NAME = "memos.json";
 export default function handlePostMemo(newMemo) {

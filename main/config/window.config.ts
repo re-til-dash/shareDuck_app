@@ -1,5 +1,6 @@
 import { fileURLToPath } from "node:url";
 import path from "node:path";
+import { app } from "electron";
 
 export const WINDOW_DEFAULT_SIZE = { width: 1200, height: 800 };
 export const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -15,3 +16,5 @@ export const RENDERER_DIST = path.join(process.env.APP_ROOT, "dist");
 process.env.VITE_PUBLIC = VITE_DEV_SERVER_URL
   ? path.join(process.env.APP_ROOT, "public")
   : RENDERER_DIST;
+
+export const userDataPath = app.getPath("userData");

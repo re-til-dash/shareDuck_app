@@ -37,9 +37,10 @@ export default function Categories({ show }: TypeCategoriesProps) {
   const handleClickCaptureCategory: MouseEventHandler = (e) => {
     const target = e.target as HTMLElement;
     const menu = target.innerText.toLocaleLowerCase();
+    //TODO: api 수정 후 state true 삭제하기
     if (menu === "overview" || menu === "post") {
-      navigate(`/${selected}/${menu}`);
-    } else navigate(`/${menu}`);
+      navigate(`/${selected}/${menu}`, { state: true });
+    } else navigate(`/${menu}`, { state: true });
   };
 
   //개별 카테고리 세팅
@@ -62,7 +63,6 @@ export default function Categories({ show }: TypeCategoriesProps) {
       setCurrentCategory((_prev) => ({ id, name, properties, userId }));
     };
 
-  console.log(categories);
   return (
     <section onClickCapture={handleClickCaptureCategory}>
       {categories.length > 0 &&

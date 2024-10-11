@@ -54,7 +54,6 @@ export default function CategoryNewDialog({
 
       setNewCategory((prev) => ({ ...prev, properties: dict }));
     }
-    console.log(1);
     if (setCategories && newCategory.name)
       setCategories({ action: "CREATE", value: newCategory });
 

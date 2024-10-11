@@ -1,9 +1,10 @@
 import fs from "fs";
 import path from "path";
-import createFolderSync, { userDataPath } from "../../utils/createFolder";
+import createFolderSync from "../../utils/createFolder";
 import hasLocalFile from "../../utils/hasLocalFile";
 import getPost from "../../api/post/getPost";
 import createLocalFile from "../../utils/createLocalFile";
+import { userDataPath } from "../../config/window.config";
 
 const FOLDER_NAME = "post";
 
@@ -12,7 +13,7 @@ export default async function handleGetPost(postId: string) {
 
   const filePath = path.join(userDataPath, FOLDER_NAME, FILE_NAME);
 
-  if (hasLocalFile(FOLDER_NAME, FILE_NAME)) {
+  if (hasLocalFile([FOLDER_NAME, FILE_NAME])) {
     try {
       const fileContent = await fs.promises.readFile(filePath, "utf-8");
       return JSON.parse(fileContent);
@@ -26,7 +27,7 @@ export default async function handleGetPost(postId: string) {
   if (!result) throw new Error(`Error: Get Post Data!!`);
 
   const content = JSON.stringify(result);
-  createFolderSync(FOLDER_NAME);
+  createFolderSync(userDataPath, FOLDER_NAME);
   createLocalFile(FOLDER_NAME, FILE_NAME, content);
 
   return result;
