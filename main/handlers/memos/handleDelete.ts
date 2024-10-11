@@ -1,6 +1,6 @@
 import fs from "fs";
 import path from "path";
-import { userDataPath } from "../../utils/createFolder.ts";
+import { userDataPath } from "../../config/window.config";
 
 const FOLDER_NAME = "memos";
 const FILE_NAME = "memos.json";

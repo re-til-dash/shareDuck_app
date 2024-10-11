@@ -2,7 +2,8 @@ import fs from "fs";
 import path from "path";
 import hasLocalFile from "../../utils/hasLocalFile.ts";
 import createLocalFile from "../../utils/createLocalFile.ts";
-import createFolderSync, { userDataPath } from "../../utils/createFolder.ts";
+import createFolderSync from "../../utils/createFolder.ts";
+import { userDataPath } from "../../config/window.config.ts";
 
 const FOLDER_NAME = "categories";
 const FILE_NAME = "categories.json";

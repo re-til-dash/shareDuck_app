@@ -1,9 +1,10 @@
 import getMemo from "../../api/memos/getMemo";
-import createFolderSync, { userDataPath } from "../../utils/createFolder";
+import createFolderSync from "../../utils/createFolder";
 import hasLocalFile from "../../utils/hasLocalFile";
 import path from "path";
 import fs from "fs";
 import createLocalFile from "../../utils/createLocalFile";
+import { userDataPath } from "../../config/window.config";
 
 const FOLDER_NAME = "memos";
 const FILE_NAME = "memos.json";
@@ -19,7 +20,7 @@ export default async function handleGetMemo({
   size: number;
 }) {
   const filePath = path.join(userDataPath, FOLDER_NAME, FILE_NAME);
-  if (hasLocalFile(FOLDER_NAME, FILE_NAME)) {
+  if (hasLocalFile([FOLDER_NAME, FILE_NAME])) {
     try {
       // 2. 파일이 있으면 파일에서 데이터 읽기
       const fileContent = fs.readFileSync(filePath, "utf8");
@@ -42,7 +43,7 @@ export default async function handleGetMemo({
 
   // 5. 로컬에 파일이 없으므로 새로 생성
   const content = JSON.stringify(result);
-  createFolderSync(FOLDER_NAME);
+  createFolderSync(userDataPath, FOLDER_NAME);
   createLocalFile(FOLDER_NAME, FILE_NAME, content);
   return result.content;
 }
