@@ -2,7 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { ChangeEventHandler, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   Button,
   CheckBox,
@@ -31,9 +31,15 @@ export default function Login() {
   });
 
   const [showWarn, setShowWarn] = useState(false);
-
+  const navigate = useNavigate();
   const handleSubmitLogin = handleSubmit(async (data) => {
     const result = await window.shareDuck.invoke("auth-post-ipc", data);
+    if (result) {
+      navigate("/", {
+        replace: true,
+        state: result,
+      });
+    }
     setShowWarn(!result);
   });
   //TODO: api 연동 필요
