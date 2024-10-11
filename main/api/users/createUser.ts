@@ -1,6 +1,6 @@
 import api from "../../config/api.config.ts";
 
-interface typeNewUser {
+export interface typeNewUser {
   email: string;
   name: string;
   password: string;

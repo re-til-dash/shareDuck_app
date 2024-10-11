@@ -11,9 +11,13 @@ import handleGetMemo from "./handlers/memos/handleGet.ts";
 import handlePostMemo from "./handlers/memos/handlePost.ts";
 import handleDeleteMemoById from "./handlers/memos/handleDelete.ts";
 import createTray from "./windows/tray.ts";
+import { store } from "./config/store.config.ts";
 const methdos: typeMethod[] = ["get", "post", "patch", "delete"];
 function initializeApp() {
   const keys = Object.keys(handlers) as typeHandlers[];
+
+  store.setStorage();
+
   methdos.forEach((method) => {
     keys.forEach((key) => registerIpcHandler(method, key));
   });
