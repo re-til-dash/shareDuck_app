@@ -45,11 +45,13 @@ function Layout() {
 
 const StyledMain = styled.main`
   display: flex;
-  height: calc(100vh - 120px);
+  height: calc(100vh - 32px);
   width: 100vw;
   & > :first-child {
     flex-shrink: 0;
   }
+
+  background-color: #f9fafb;
 `;
 
 export default Layout;
