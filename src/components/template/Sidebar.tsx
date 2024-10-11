@@ -4,7 +4,6 @@ import {
   MouseEventHandler,
   useEffect,
   useReducer,
-  useRef,
   useState,
 } from "react";
 import { User, userData } from "@/types/user";
@@ -159,7 +158,6 @@ export default function Sidebar() {
           <Button.Icon src={"plus"} alt={"plus"} />
           {show && <Button.Text>Write Page</Button.Text>}
         </Button>
-
         <StyledSettingsSection>
           <Button
             style={{ marginRight: 0 }}
