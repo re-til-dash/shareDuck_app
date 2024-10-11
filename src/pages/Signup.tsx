@@ -96,7 +96,13 @@ export default function Signup() {
   }, [isValid]);
   // 폼 제출 핸들러
   const onSubmit = async (data: FormValues) => {
-    const result = await window.shareDuck.invoke("user-post-ipc", data);
+    const newUser = {
+      email: data.email,
+      name: data.name,
+      profile: "",
+      password: data.password,
+    };
+    const result = await window.shareDuck.invoke("user-post-ipc", newUser);
     setShowWarn(!result);
   };
 
