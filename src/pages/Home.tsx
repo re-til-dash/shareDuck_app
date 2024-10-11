@@ -16,12 +16,12 @@ export default function Home() {
     </DashBoard>
   );
 }
-//(전체 - 헤더 높이 - 패딩값 * 2(상하) - (marginbottom+gap) * 최소 line 수) / 자식 수
-const defaultHeight = `(100vh - 32px - 5vh * 2 - (20px + 20px) * 3) / 6`;
+//(전체  - (marginbottom+gap) * 최소 line 수) / 자식 수
+const defaultHeight = `(100% - (20px + 20px) * 3) / 6`;
 const StyledContainer = styled.div`
   border-radius: 8px;
   background-color: var(--wb-000);
-  min-width: 30%;
+  min-width: 320px;
   height: calc(${defaultHeight} * 3);
   &:nth-child(n + 4) {
     height: calc(${defaultHeight});

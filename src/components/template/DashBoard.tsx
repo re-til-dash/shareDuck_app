@@ -31,8 +31,9 @@ export default function DashBoard({ children }: TypeDashBoard) {
 //grid로 하려다가 flex-wrap으로 반응형 적용하는 게 좋을 것 같아 flex를 사용합니다.
 const StyledGrid = styled.main`
   height: 100%;
+  overflow: auto;
   width: 100%;
-  padding: 5vw;
+  padding: 5vh;
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
