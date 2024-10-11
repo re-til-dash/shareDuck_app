@@ -40,7 +40,7 @@ export default function Categories({ show }: TypeCategoriesProps) {
     //TODO: api 수정 후 state true 삭제하기
     if (menu === "overview" || menu === "post") {
       navigate(`/${selected}/${menu}`, { state: true });
-    } else navigate(`/${menu}`, { state: true });
+    } else navigate(`/${selected}/overview`, { state: true });
   };
 
   //개별 카테고리 세팅

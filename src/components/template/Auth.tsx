@@ -19,6 +19,7 @@ const StyeldSection = styled.section`
   min-width: 400px;
   height: fit-content;
   margin: auto;
+  padding-top: 32px;
 `;
 
 const StyledForm = styled.form`
@@ -31,7 +32,8 @@ const StyledForm = styled.form`
   }
 
   & input {
-    width: 100%;
+    /* width를 100%로 주게되면 가로 스크롤이 생김 */
+    width: 400px;
   }
 
   & input[type="checkbox"] {

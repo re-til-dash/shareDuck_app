@@ -45,11 +45,16 @@ function Layout() {
 
 const StyledMain = styled.main`
   display: flex;
-  height: calc(100vh - 120px);
+  height: 100vh;
   width: 100vw;
+  /* 여백상쇄가 일어나지 않아서  margin이 아닌 padding 사용 */
+  padding-top: 32px;
+
   & > :first-child {
     flex-shrink: 0;
   }
+
+  background-color: #f9fafb;
 `;
 
 export default Layout;

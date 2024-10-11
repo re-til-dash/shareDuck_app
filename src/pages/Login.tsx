@@ -88,9 +88,7 @@ export default function Login() {
         </label>
       )}
 
-      <label>
-        <CheckBox label="자동 로그인" onChange={handleCheckAutoLogin} />
-      </label>
+      <CheckBox label="자동 로그인" onChange={handleCheckAutoLogin} />
       <Button type="submit">
         <Button.Text>로그인</Button.Text>
       </Button>

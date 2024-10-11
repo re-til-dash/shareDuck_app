@@ -26,7 +26,7 @@ export default function Header() {
           <TitlebarIcons.Close onClick={handleClickClose} />
         </TitlebarIcons>
       </StyledHeader>
-      <div style={{ height: "32px", width: "100vw" }}></div>
+      {/* <div style={{ height: "32px", width: "100vw" }}></div> */}
     </>
   );
 }
