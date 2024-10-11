@@ -62,7 +62,6 @@ export default function Categories({ show }: TypeCategoriesProps) {
       setCurrentCategory((_prev) => ({ id, name, properties, userId }));
     };
 
-  console.log(categories);
   return (
     <section onClickCapture={handleClickCaptureCategory}>
       {categories.length > 0 &&

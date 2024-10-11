@@ -110,24 +110,19 @@ export default function Sidebar() {
   }, []);
   /**local state*/
   const [ref, setRef] = useState<HTMLElement | null>(null);
-  const [logout, setLogout] = useState(false);
   //sidebar 펼치기/접기
   const [show, setShow] = useState(true);
 
-  const logoutRef = useRef(ref);
   const handleClickSetting: MouseEventHandler = (_e) => {};
-  const handleClickLogOut: MouseEventHandler = (_e) => {
-    setRef(_e.target as HTMLElement);
-    setLogout((_prev) => !_prev);
+  const handleClickLogOut: MouseEventHandler = (e) => {
+    e.preventDefault();
+    setRef(e.target as HTMLElement);
   };
   const handleClickShow: MouseEventHandler = () => {
     setShow(!show);
   };
 
   const navigate = useNavigate();
-
-  // deprecated: post list 페이지가 나오면 삭제될것
-  const [postId, setPostId] = useState("");
 
   return (
     <SidebarContext.Provider
@@ -164,24 +159,7 @@ export default function Sidebar() {
           <Button.Icon src={"plus"} alt={"plus"} />
           {show && <Button.Text>Write Page</Button.Text>}
         </Button>
-        <Button
-          style={{ marginRight: 0, display: "flex", flexDirection: "column" }}
-          type="button"
-        >
-          <Button.Icon src={"plus"} alt={"plus"} />
-          {show && <Button.Text>Detail Page</Button.Text>}
-          <input
-            type="text"
-            value={postId}
-            onChange={(e) => setPostId(e.target.value)}
-            placeholder="Enter: postId ex) 19"
-            onKeyDown={(e) => {
-              if (e.code === "Enter") {
-                navigate(`/${postId}/detailpage`);
-              }
-            }}
-          />
-        </Button>
+
         <StyledSettingsSection>
           <Button
             style={{ marginRight: 0 }}
@@ -199,7 +177,7 @@ export default function Sidebar() {
             <Button.Icon src={LogOutIcon} alt="log out" />
             {show && <Button.Text>Log-out</Button.Text>}
           </Button>
-          {logout && <LogoutCheckDialog openTrigger={logoutRef.current!} />}
+          {ref && <LogoutCheckDialog openTrigger={ref} />}
         </StyledSettingsSection>
         <StyledMoreFloatButton
           onClick={handleClickShow}
