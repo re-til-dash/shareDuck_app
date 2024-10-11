@@ -4,12 +4,10 @@ import axios from "axios";
 
 //! VITE_BASEAPI_KEY => VITE_BASE_KEY
 const baseURL = import.meta.env.VITE_BASE_KEY;
-const testToken = import.meta.env.VITE_TOKEN_KEY;
 
 const api = axios.create({
   headers: {
     "Content-Type": "application/json;  charset=utf-8",
-    // Authorization: `Baerer ${testToken}`,
   },
 });
 
