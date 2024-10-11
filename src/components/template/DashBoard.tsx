@@ -25,6 +25,28 @@ export default function DashBoard({ children }: TypeDashBoard) {
     <>
       <header className="a11y-hidden">{currentMenu}</header>
       <StyledGrid>{children}</StyledGrid>
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          zIndex: 99,
+          backgroundColor: "rgb(89, 86, 90)",
+          opacity: 0.5,
+        }}
+      ></div>
+      <p
+        style={{
+          position: "absolute",
+          inset: 0,
+          zIndex: 99,
+          width: "fit-content",
+          height: "fit-content",
+          margin: "auto",
+          color: "var(--wb-000)",
+        }}
+      >
+        대시보드는 아직 준비중입니다🥲
+      </p>
     </>
   );
 }
