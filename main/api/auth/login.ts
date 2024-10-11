@@ -13,9 +13,9 @@ export default async function login(data, config = {}) {
   try {
     const result = await api.post(`/login`, data, config);
 
-    return result.headers.getAuthorization;
+    return result.headers["authorization"];
   } catch (error) {
-    console.log("login", error);
+    console.log("login", error.response.data.message);
   }
 
   return null;

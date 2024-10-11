@@ -2,8 +2,9 @@ import fs from "fs";
 import path from "path";
 import hasLocalFile from "../../utils/hasLocalFile.ts";
 import createLocalFile from "../../utils/createLocalFile.ts";
-import createFolderSync, { userDataPath } from "../../utils/createFolder.ts";
+import createFolderSync from "../../utils/createFolder.ts";
 import postCategories from "../../api/categories/postCategories.ts";
+import { userDataPath } from "../../config/window.config.ts";
 
 const FOLDER_NAME = "categories";
 const FILE_NAME = "categories.json";
@@ -17,7 +18,7 @@ export default async function handlePostCategories(data) {
     throw Error(result);
   }
 
-  if (hasLocalFile(FOLDER_NAME, FILE_NAME)) {
+  if (hasLocalFile([FOLDER_NAME, FILE_NAME])) {
     // 2. 파일이 존재하는지 확인
     try {
       // 3. 파일이 있으면 파일에서 기존 데이터 불러오기
@@ -35,7 +36,7 @@ export default async function handlePostCategories(data) {
 
   // 4. 로컬에 파일이 없으므로 새로 생성
   const content = JSON.stringify(result);
-  createFolderSync(FOLDER_NAME);
+  createFolderSync(userDataPath, FOLDER_NAME);
   createLocalFile(FOLDER_NAME, FILE_NAME, content);
 
   return result;

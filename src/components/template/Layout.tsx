@@ -12,9 +12,9 @@ function Layout() {
   }, [menu]);
 
   const handleClickMemoOpen: MouseEventHandler = (_e) => {
-    //! CategoryId가 없는 경우 일단 home으로 넣음. 이에 대한 예외처리 필요
+    //CategoryId가 없는 경우 -> 전체 메모 불러오기로 변경
     window.shareDuck.send("memo-ipc", "open", {
-      categoryId: menu ?? "home",
+      categoryId: menu,
       keyword: "",
       page: 0,
       size: 1,
@@ -22,10 +22,7 @@ function Layout() {
   };
   return (
     <StyledMain>
-      <Sidebar />
-      <div style={{ minWidth: "212.7px" }}></div>
-      <Outlet />
-      {/* 임시 아이콘 */}
+      <Sidebar />{" "}
       <IconButton.Primary
         style={{
           position: "fixed",
@@ -40,13 +37,16 @@ function Layout() {
         alt="open memo"
         onClick={handleClickMemoOpen}
       />
+      <div style={{ minWidth: "212.7px" }}></div>
+      <Outlet />
     </StyledMain>
   );
 }
 
 const StyledMain = styled.main`
   display: flex;
-
+  height: calc(100vh - 120px);
+  width: 100vw;
   & > :first-child {
     flex-shrink: 0;
   }

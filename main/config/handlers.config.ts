@@ -1,4 +1,4 @@
-import handlePostLogin from "../handlers/auth/handlePost.ts";
+import handleLogin from "../handlers/auth/handleLogin.ts";
 import handleGetCategories from "../handlers/categories/handleGet.ts";
 import handlePatchCategories from "../handlers/categories/handlePatch.ts";
 import handlePostCategories from "../handlers/categories/handlePost.js";
@@ -19,6 +19,7 @@ import handlePatchUser from "../handlers/users/handlePatch.ts";
 import handlePatchPassword from "../handlers/users/handlePatchPw.ts";
 import handlePostUser from "../handlers/users/handlePost.ts";
 import handleDeleteCategoryById from "../handlers/categories/handleDelete.ts";
+import handleLogout from "../handlers/auth/handleLogout.ts";
 
 const handlers = {
   categories: {
@@ -29,9 +30,9 @@ const handlers = {
   },
   auth: {
     get: () => {},
-    post: handlePostLogin, //로그인
+    post: handleLogin, //로그인
     patch: () => {},
-    delete: () => {},
+    delete: handleLogout, //로그아웃
   },
   user: {
     get: handleGetUser,

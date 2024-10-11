@@ -24,6 +24,7 @@ import {
 import Categories from "@components/sidebar/Categories";
 import NewCategory from "@components/sidebar/NewCategory";
 import { useNavigate } from "react-router";
+import LogoutCheckDialog from "@components/dialog/LogoutCheckDialog";
 
 export interface TypeSidebarContext {
   user: Partial<User>;
@@ -107,20 +108,20 @@ export default function Sidebar() {
       .then((res) => setCategories({ action: "GET", value: res }));
   }, []);
   /**local state*/
-
+  const [ref, setRef] = useState<HTMLElement | null>(null);
   //sidebar 펼치기/접기
   const [show, setShow] = useState(true);
 
   const handleClickSetting: MouseEventHandler = (_e) => {};
-  const handleClickLogOut: MouseEventHandler = (_e) => {};
+  const handleClickLogOut: MouseEventHandler = (e) => {
+    e.preventDefault();
+    setRef(e.target as HTMLElement);
+  };
   const handleClickShow: MouseEventHandler = () => {
     setShow(!show);
   };
 
   const navigate = useNavigate();
-
-  // deprecated: post list 페이지가 나오면 삭제될것
-  const [postId, setPostId] = useState("");
 
   return (
     <SidebarContext.Provider
@@ -157,42 +158,6 @@ export default function Sidebar() {
           <Button.Icon src={"plus"} alt={"plus"} />
           {show && <Button.Text>Write Page</Button.Text>}
         </Button>
-        <Button
-          style={{ marginRight: 0 }}
-          type="button"
-          onClick={() => {
-            navigate("/signUp");
-          }}
-        >
-          {<Button.Text>Sign Up</Button.Text>}
-        </Button>
-        <Button
-          style={{ marginRight: 0 }}
-          type="button"
-          onClick={() => {
-            navigate("/signIn");
-          }}
-        >
-          <Button.Text>Sign In</Button.Text>
-        </Button>
-        <Button
-          style={{ marginRight: 0, display: "flex", flexDirection: "column" }}
-          type="button"
-        >
-          <Button.Icon src={"plus"} alt={"plus"} />
-          {show && <Button.Text>Detail Page</Button.Text>}
-          <input
-            type="text"
-            value={postId}
-            onChange={(e) => setPostId(e.target.value)}
-            placeholder="Enter: postId ex) 19"
-            onKeyDown={(e) => {
-              if (e.code === "Enter") {
-                navigate(`/${postId}/detailpage`);
-              }
-            }}
-          />
-        </Button>
         <StyledSettingsSection>
           <Button
             style={{ marginRight: 0 }}
@@ -210,6 +175,7 @@ export default function Sidebar() {
             <Button.Icon src={LogOutIcon} alt="log out" />
             {show && <Button.Text>Log-out</Button.Text>}
           </Button>
+          {ref && <LogoutCheckDialog openTrigger={ref} />}
         </StyledSettingsSection>
         <StyledMoreFloatButton
           onClick={handleClickShow}

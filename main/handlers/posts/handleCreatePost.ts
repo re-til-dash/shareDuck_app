@@ -1,9 +1,9 @@
 import { createPost } from "../../api/post/createPost";
 import fs from "fs";
 import path from "path";
-import { userDataPath } from "../../utils/createFolder";
 import hasLocalFile from "../../utils/hasLocalFile";
 import createLocalFile from "../../utils/createLocalFile";
+import { userDataPath } from "../../config/window.config";
 
 const FOLDER_NAME = "post";
 
@@ -37,16 +37,13 @@ export default async function handleCreatePost(data) {
   const postId = result.id;
   const FILE_NAME = `post.${postId}.json`;
 
-  if (hasLocalFile(FOLDER_NAME, FILE_NAME)) {
+  if (hasLocalFile([FOLDER_NAME, FILE_NAME])) {
     // 2. 파일이 존재하는지 확인
     try {
       // 3. 파일이 있으면 파일에서 기존 데이터 불러오기
       const fileContent = fs.readFileSync(filePath, "utf8");
       const data = JSON.parse(fileContent);
 
-      console.log(data);
-
-      //!카테고리의 순서를 옮겨야 한다면 여기를 고쳐야함!
       data.categories.push(result);
       // 기존 데이터에 새로운 데이터 추가하기
       fs.writeFileSync(filePath, JSON.stringify(data));
