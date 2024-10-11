@@ -21,6 +21,8 @@ function initializeApp() {
   const mainWindow = createWindow();
   const memoWindow = createMemoWindow();
 
+  memoWindow.hide();
+
   ipcMain.on("title-bar-action", (_e, action, window = null) => {
     const targetWindow = window ? memoWindow : mainWindow;
     switch (action) {
